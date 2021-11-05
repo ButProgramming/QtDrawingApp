@@ -11,6 +11,8 @@
 #include <QCursor>
 #include <QPoint>
 
+#include "ishape.h"
+
 //stl
 #include <vector>
 using namespace std;
@@ -55,6 +57,7 @@ private:
     int lastX;
     int lastY;
     bool leftMouseIsDown = false;
+    vector<IShape*> shapes;
 
 
 

@@ -25,11 +25,20 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     {
         if(event->button() == Qt::LeftButton)
         {
+            IShape* shape = new Ellipse(event->x(), event->y());
+            shapes.push_back(shape);
+
+
+            //test *t = new testChild();
+            //t->printTest();
+            /*IShape *a = new Ellipse();
+            a->draw();
             leftMouseIsDown = true;
             qDebug() << leftMouseIsDown  << " mousePressEvent" ;
             x = event->x();
             y = event->y();
             update();
+            delete a;*/
         }
 
     }
@@ -58,15 +67,21 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
+
     QPoint v = QCursor::pos();
+
+    for(auto shape:shapes)
+    {
+        shape->draw(this);
+    }
 
 
 
     if(leftMouseIsDown)
     {
-        QPainter painter(this);
+        /*QPainter painter(this);
         QRect rect(x, y, lastX - x, lastY - y);
-        painter.drawEllipse(rect);
+        painter.drawEllipse(rect);*/
     }
 
 }
