@@ -33,6 +33,15 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         y = event->y();
     }
 
+    for(auto shape:shapes)
+    {
+        if(dynamic_cast<IAreaShape*>(shape)!=nullptr)
+        {
+            QPoint point(event->x(), event->y());
+            if(dynamic_cast<IAreaShape*>(shape)->contains(point))
+                qDebug() << "true!!";
+        }
+    }
 
     /*else if(tool==Tool::ELLIPSE)
     {

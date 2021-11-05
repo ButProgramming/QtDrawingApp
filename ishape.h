@@ -13,6 +13,7 @@
 #include <QCursor>
 #include <QPoint>
 #include <QDebug>
+#include <QGraphicsEllipseItem>
 
 
 class IShape
@@ -50,7 +51,9 @@ public:
     }
     bool contains(const QPoint& point)
     {
-        return true;
+        if(m_rect.contains(point))
+            return true;
+        return false;
     }
 };
 
@@ -69,7 +72,10 @@ public:
     }
     bool contains(const QPoint& point)
     {
-        return true;
+        QGraphicsEllipseItem ellipse(m_rect);
+        if(ellipse.contains(point))
+            return true;
+        return false;
     }
 };
 
@@ -81,9 +87,8 @@ public:
     void draw(QPaintDevice* device) override
     {
         QPainter painter(device);
+
         QPainterPath path;
-
-
         path.moveTo(m_rect.left() + (m_rect.width() / 2), m_rect.top());
         path.lineTo(m_rect.bottomLeft());
         path.lineTo(m_rect.bottomRight());
@@ -96,10 +101,21 @@ public:
         painter.drawPath(path);
         painter.fillPath(path, QBrush(QColor ("white")));
     }
+
     bool contains(const QPoint& point)
     {
-        return true;
+        QPainterPath path;
+        path.moveTo(m_rect.left() + (m_rect.width() / 2), m_rect.top());
+        path.lineTo(m_rect.bottomLeft());
+        path.lineTo(m_rect.bottomRight());
+        path.lineTo(m_rect.left() + (m_rect.width() / 2), m_rect.top());
+        if(path.contains(point))
+            return true;
+        return false;
     }
+private:
+    //QPainterPath path;
+
 };
 
 class ConnectionLine : public IShape
