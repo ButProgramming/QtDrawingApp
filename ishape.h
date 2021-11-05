@@ -42,8 +42,8 @@ public:
     void draw(QPaintDevice* device)
     {
         QPainter painter(device);
-        QRect rect(m_x, m_y, m_length, m_width);
-        painter.drawEllipse(rect);
+        painter.setBrush(Qt::white);
+        painter.drawEllipse(QRect(m_x, m_y, m_length, m_width));
         qDebug() << m_x << " " << m_y;
     }
 };

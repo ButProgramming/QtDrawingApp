@@ -31,18 +31,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         {
             x = event->x();
             y = event->y();
-
-
-            //test *t = new testChild();
-            //t->printTest();
-            /*IShape *a = new Ellipse();
-            a->draw();
-            leftMouseIsDown = true;
-            qDebug() << leftMouseIsDown  << " mousePressEvent" ;
-            x = event->x();
-            y = event->y();
-            update();
-            delete a;*/
         }
 
     }
@@ -86,6 +74,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         qDebug() << "here";
         QPainter painter(this);
         QRect rect(x, y, lastX - x, lastY - y);
+        painter.setBrush(Qt::white);
         painter.drawEllipse(rect);
     }
 
