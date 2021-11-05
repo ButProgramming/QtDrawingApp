@@ -30,13 +30,26 @@ protected:
     int m_width{};
 };
 
+class Rectangle : public IShape
+{
+public:
+    Rectangle(const QRect& rect) : IShape(rect) {}
+    void draw(QPaintDevice *device) override
+    {
+        QPainter painter(device);
+        painter.setBrush(Qt::white);
+        painter.drawRect(m_rect);
+        qDebug() << m_x << " " << m_y;
+    }
+};
+
 class Ellipse : public IShape
 {
 public:
     Ellipse(const QRect& rect) : IShape(rect) {}
     Ellipse(int x, int y, int length, int width) : IShape(x, y, length, width){}
 
-    void draw(QPaintDevice* device)
+    void draw(QPaintDevice* device) override
     {
         QPainter painter(device);
         painter.setBrush(Qt::white);
@@ -50,7 +63,7 @@ class Triangle : public IShape
 public:
     Triangle(const QRect& rect) : IShape(rect) {}
 
-    void draw(QPaintDevice* device)
+    void draw(QPaintDevice* device) override
     {
         QPainter painter(device);
         QPainterPath path;
@@ -67,6 +80,28 @@ public:
         painter.setPen(pen);
         painter.drawPath(path);
         painter.fillPath(path, QBrush(QColor ("white")));
+    }
+};
+
+class ConnectionLine : public IShape
+{
+public:
+    ConnectionLine(const QRect& rect) : IShape(rect){}
+
+    void draw(QPaintDevice* device) override
+    {
+        QPainter painter(device);
+        QPainterPath path;
+
+        path.moveTo(m_rect.left(), m_rect.top());
+        path.lineTo(m_rect.bottomRight());
+
+        QPen pen(Qt::black);
+        pen.setWidth(2);
+        painter.setPen(pen);
+        painter.drawPath(path);
+        //path.lineTo(m_rect.bottomRight());
+        //path.lineTo(m_rect.left() + (m_rect.width() / 2), m_rect.top());
     }
 };
 

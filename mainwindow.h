@@ -41,6 +41,10 @@ private slots:
 
     void on_actionTriangle_triggered();
 
+    void on_actionRectangle_triggered();
+
+    void on_actionConnect_triggered();
+
 private:
     Ui::MainWindow *ui;
     enum class Tool // добавление "class" к enum определяет перечисление с ограниченной областью видимости, вместо стандартного "глобального" перечисления

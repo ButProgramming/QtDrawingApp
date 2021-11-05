@@ -23,8 +23,18 @@ void MainWindow::on_actionEllipse_triggered()
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 
+
+
     leftMouseIsDown = true;
-    if(tool==Tool::ELLIPSE)
+
+    if(event->button() == Qt::LeftButton)
+    {
+        x = event->x();
+        y = event->y();
+    }
+
+
+    /*else if(tool==Tool::ELLIPSE)
     {
         if(event->button() == Qt::LeftButton)
         {
@@ -39,12 +49,18 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
             x = event->x();
             y = event->y();
         }
-    }
+    }*/
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(tool == Tool::ELLIPSE)
+    if(tool == Tool::RECTAGLE)
+    {
+        QRect rect(x, y, event->x()- x, event->y() - y);
+        IShape* shape = new Rectangle(rect);
+        shapes.push_back(shape);
+    }
+    else if(tool == Tool::ELLIPSE)
     {
         IShape* shape = new Ellipse(x, y, event->x()- x, event->y() - y);
         shapes.push_back(shape);
@@ -53,6 +69,12 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     {
         QRect rect(x, y, event->x()- x, event->y() - y);
         IShape* shape = new Triangle(rect);
+        shapes.push_back(shape);
+    }
+    else if(tool == Tool::CONNTECTION_LINE)
+    {
+        QRect rect(x, y, event->x()- x, event->y() - y);
+        IShape* shape = new ConnectionLine(rect);
         shapes.push_back(shape);
     }
 
@@ -81,7 +103,13 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
 
     QPainter painter(this);
-    if(leftMouseIsDown && tool == Tool::ELLIPSE)
+    if(leftMouseIsDown && tool == Tool::RECTAGLE)
+    {
+        QRect rect(x, y, lastX - x, lastY - y);
+        painter.setBrush(Qt::white);
+        painter.drawRect(rect);
+    }
+    else if(leftMouseIsDown && tool == Tool::ELLIPSE)
     {
         QRect rect(x, y, lastX - x, lastY - y);
         painter.setBrush(Qt::white);
@@ -108,6 +136,20 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.fillPath(path, QBrush(QColor ("white")));
 
     }
+    else if(leftMouseIsDown && tool == Tool::CONNTECTION_LINE)
+    {
+        QRect rect(x, y, lastX - x, lastY - y);
+
+        QPainterPath path;
+
+        path.moveTo(rect.left(), rect.top());
+        path.lineTo(rect.bottomRight());
+
+        QPen pen(Qt::black);
+        pen.setWidth(2);
+        painter.setPen(pen);
+        painter.drawPath(path);
+    }
 
 
 
@@ -118,4 +160,14 @@ void MainWindow::paintEvent(QPaintEvent *event)
 void MainWindow::on_actionTriangle_triggered()
 {
     tool = Tool::TRIANGLE;
+}
+
+void MainWindow::on_actionRectangle_triggered()
+{
+    tool = Tool::RECTAGLE;
+}
+
+void MainWindow::on_actionConnect_triggered()
+{
+    tool = Tool::CONNTECTION_LINE;
 }
