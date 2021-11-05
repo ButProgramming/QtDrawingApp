@@ -26,21 +26,23 @@ class Node
 class IShape
 {
 public:
-    IShape(int x, int y) : m_x(x), m_y(y){};
+    IShape(int x, int y, int length, int width) : m_x(x), m_y(y), m_length(length), m_width(width){};
     virtual void draw(QPaintDevice* device) = 0;
 protected:
     int m_x{};
     int m_y{};
+    int m_length{};
+    int m_width{};
 };
 
 class Ellipse : public IShape
 {
 public:
-    Ellipse(int x, int y) : IShape(x, y){};
+    Ellipse(int x, int y, int length, int width) : IShape(x, y, length, width){}
     void draw(QPaintDevice* device)
     {
         QPainter painter(device);
-        QRect rect(m_x, m_y, 100, 100);
+        QRect rect(m_x, m_y, m_length, m_width);
         painter.drawEllipse(rect);
         qDebug() << m_x << " " << m_y;
     }

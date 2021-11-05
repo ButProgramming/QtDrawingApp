@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -21,12 +22,15 @@ void MainWindow::on_actionEllipse_triggered()
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
+
+    qDebug() << event->x()<< " "<<event->y();
     if(tool==Tool::ELLIPSE)
     {
+        leftMouseIsDown = true;
         if(event->button() == Qt::LeftButton)
         {
-            IShape* shape = new Ellipse(event->x(), event->y());
-            shapes.push_back(shape);
+            x = event->x();
+            y = event->y();
 
 
             //test *t = new testChild();
@@ -48,6 +52,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
+    IShape* shape = new Ellipse(x, y, event->x()- x, event->y() - y);
+    shapes.push_back(shape);
     leftMouseIsDown = false;
     lastX = event->x();
     lastY = event->y();
@@ -67,21 +73,20 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-
     QPoint v = QCursor::pos();
 
     for(auto shape:shapes)
     {
         shape->draw(this);
     }
-
-
+    qDebug() << leftMouseIsDown;
 
     if(leftMouseIsDown)
     {
-        /*QPainter painter(this);
+        qDebug() << "here";
+        QPainter painter(this);
         QRect rect(x, y, lastX - x, lastY - y);
-        painter.drawEllipse(rect);*/
+        painter.drawEllipse(rect);
     }
 
 }
