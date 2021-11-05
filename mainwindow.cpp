@@ -21,18 +21,52 @@ void MainWindow::on_actionEllipse_triggered()
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton)
+    if(tool==Tool::ELLIPSE)
     {
-        x = event->x();
-        y = event->y();
+        if(event->button() == Qt::LeftButton)
+        {
+            leftMouseIsDown = true;
+            qDebug() << leftMouseIsDown  << " mousePressEvent" ;
+            x = event->x();
+            y = event->y();
+            update();
+        }
+
     }
-    qDebug() << x << " " << y;
+
+
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    leftMouseIsDown = false;
+    lastX = event->x();
+    lastY = event->y();
+    update();
+    QString s = QString("My RELEASE key");
+    qDebug() << s;
+
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    lastX = event->x();
+    lastY = event->y();
+    qDebug() << lastX - x << " " << lastY - y;
     update();
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-    QPainter painter(this);
-    QRect rect(x, y, 100, 200);
-    painter.drawEllipse(rect);
+    QPoint v = QCursor::pos();
+
+
+
+    if(leftMouseIsDown)
+    {
+        QPainter painter(this);
+        QRect rect(x, y, lastX - x, lastY - y);
+        painter.drawEllipse(rect);
+    }
+
 }

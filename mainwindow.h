@@ -5,6 +5,12 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QEvent>
+
+#include <QObject>
+#include <QCursor>
+#include <QPoint>
+
 //stl
 #include <vector>
 using namespace std;
@@ -24,6 +30,8 @@ public:
     //virtual
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void paintEvent(QPaintEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
 
 private slots:
     void on_actionEllipse_triggered();
@@ -44,6 +52,11 @@ private:
     QPainter painter;
     int x;
     int y;
+    int lastX;
+    int lastY;
+    bool leftMouseIsDown = false;
+
+
 
     //vector<
 
