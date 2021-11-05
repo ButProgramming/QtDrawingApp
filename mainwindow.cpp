@@ -13,3 +13,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_actionEllipse_triggered()
+{
+    qDebug() << "12345";
+}
