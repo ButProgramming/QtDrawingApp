@@ -23,25 +23,39 @@ void MainWindow::on_actionEllipse_triggered()
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 
-    qDebug() << event->x()<< " "<<event->y();
+    leftMouseIsDown = true;
     if(tool==Tool::ELLIPSE)
     {
-        leftMouseIsDown = true;
         if(event->button() == Qt::LeftButton)
         {
             x = event->x();
             y = event->y();
         }
-
     }
-
-
+    else if(tool == Tool::TRIANGLE)
+    {
+        if(event->button() == Qt::LeftButton)
+        {
+            x = event->x();
+            y = event->y();
+        }
+    }
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    IShape* shape = new Ellipse(x, y, event->x()- x, event->y() - y);
-    shapes.push_back(shape);
+    if(tool == Tool::ELLIPSE)
+    {
+        IShape* shape = new Ellipse(x, y, event->x()- x, event->y() - y);
+        shapes.push_back(shape);
+    }
+    else if(tool == Tool::TRIANGLE)
+    {
+        QRect rect(x, y, event->x()- x, event->y() - y);
+        IShape* shape = new Triangle(rect);
+        shapes.push_back(shape);
+    }
+
     leftMouseIsDown = false;
     lastX = event->x();
     lastY = event->y();
@@ -55,27 +69,53 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     lastX = event->x();
     lastY = event->y();
-    qDebug() << lastX - x << " " << lastY - y;
     update();
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-    QPoint v = QCursor::pos();
 
     for(auto shape:shapes)
     {
         shape->draw(this);
     }
-    qDebug() << leftMouseIsDown;
 
-    if(leftMouseIsDown)
+    QPainter painter(this);
+    if(leftMouseIsDown && tool == Tool::ELLIPSE)
     {
-        qDebug() << "here";
-        QPainter painter(this);
         QRect rect(x, y, lastX - x, lastY - y);
         painter.setBrush(Qt::white);
         painter.drawEllipse(rect);
     }
+    else if(leftMouseIsDown && tool == Tool::TRIANGLE)
+    {
+        QRect rect(x, y, lastX - x, lastY - y);
 
+
+        QPainterPath path;
+
+
+        path.moveTo(rect.left() + (rect.width() / 2), rect.top());
+        path.lineTo(rect.bottomLeft());
+        path.lineTo(rect.bottomRight());
+        path.lineTo(rect.left() + (rect.width() / 2), rect.top());
+
+
+        QPen pen(Qt::black);
+        pen.setWidth(2);
+        painter.setPen(pen);
+        painter.drawPath(path);
+        painter.fillPath(path, QBrush(QColor ("white")));
+
+    }
+
+
+
+
+
+}
+
+void MainWindow::on_actionTriangle_triggered()
+{
+    tool = Tool::TRIANGLE;
 }

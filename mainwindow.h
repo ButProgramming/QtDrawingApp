@@ -10,6 +10,7 @@
 #include <QObject>
 #include <QCursor>
 #include <QPoint>
+#include <QPainterPath>
 
 #include "ishape.h"
 
@@ -37,6 +38,8 @@ public:
 
 private slots:
     void on_actionEllipse_triggered();
+
+    void on_actionTriangle_triggered();
 
 private:
     Ui::MainWindow *ui;
