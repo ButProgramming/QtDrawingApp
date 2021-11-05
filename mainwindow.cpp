@@ -62,7 +62,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     }
     else if(tool == Tool::ELLIPSE)
     {
-        IShape* shape = new Ellipse(x, y, event->x()- x, event->y() - y);
+        QRect rect(x, y, event->x()- x, event->y() - y);
+        IShape* shape = new Ellipse(rect);
+        //IShape* shape = new Ellipse(x, y, event->x()- x, event->y() - y);
         shapes.push_back(shape);
     }
     else if(tool == Tool::TRIANGLE)

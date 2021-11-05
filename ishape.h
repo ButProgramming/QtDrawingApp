@@ -30,10 +30,17 @@ protected:
     int m_width{};
 };
 
-class Rectangle : public IShape
+class IAreaShape : public IShape
 {
 public:
-    Rectangle(const QRect& rect) : IShape(rect) {}
+    IAreaShape(const QRect& rect) : IShape(rect) {}
+    virtual bool contains(const QPoint& point) = 0;
+};
+
+class Rectangle : public IAreaShape
+{
+public:
+    Rectangle(const QRect& rect) : IAreaShape(rect) {}
     void draw(QPaintDevice *device) override
     {
         QPainter painter(device);
@@ -41,27 +48,35 @@ public:
         painter.drawRect(m_rect);
         qDebug() << m_x << " " << m_y;
     }
+    bool contains(const QPoint& point)
+    {
+        return true;
+    }
 };
 
-class Ellipse : public IShape
+class Ellipse : public IAreaShape
 {
 public:
-    Ellipse(const QRect& rect) : IShape(rect) {}
-    Ellipse(int x, int y, int length, int width) : IShape(x, y, length, width){}
+    Ellipse(const QRect& rect) : IAreaShape(rect) {}
+    //Ellipse(int x, int y, int length, int width) : IShape(x, y, length, width){}
 
     void draw(QPaintDevice* device) override
     {
         QPainter painter(device);
         painter.setBrush(Qt::white);
-        painter.drawEllipse(QRect(m_x, m_y, m_length, m_width));
+        painter.drawEllipse(m_rect);
         qDebug() << m_x << " " << m_y;
+    }
+    bool contains(const QPoint& point)
+    {
+        return true;
     }
 };
 
-class Triangle : public IShape
+class Triangle : public IAreaShape
 {
 public:
-    Triangle(const QRect& rect) : IShape(rect) {}
+    Triangle(const QRect& rect) : IAreaShape(rect) {}
 
     void draw(QPaintDevice* device) override
     {
@@ -80,6 +95,10 @@ public:
         painter.setPen(pen);
         painter.drawPath(path);
         painter.fillPath(path, QBrush(QColor ("white")));
+    }
+    bool contains(const QPoint& point)
+    {
+        return true;
     }
 };
 
