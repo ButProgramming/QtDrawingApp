@@ -25,8 +25,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     {
         x = event->x();
         y = event->y();
-        lastX = x;
-        lastY = y;
+       lastX = x;
+       lastY = y;
     }
 
     if(tool == Tool::MOVE)
@@ -72,7 +72,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    shapes.back()->updateCreate(lastX, lastY);
+    if(tool!=Tool::MOVE/* || tool!=Tool::SAFE || tool!=Tool::LOAD*/)
+        shapes.back()->updateCreate(lastX, lastY);
     lastX = event->x();
     lastY = event->y();
     QPoint lastPoint(lastX, lastY);
@@ -91,51 +92,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
     // draw shapes from vector
     for(auto shape:shapes)
         shape->draw(this);
-
-    // draw a shape that is going to be in the vector
-    /*QPainter painter(this);
-    QRect rect(x, y, lastX - x, lastY - y);
-    if(leftMouseIsDown && tool == Tool::RECTAGLE)
-    {
-        painter.setBrush(Qt::white);
-        painter.drawRect(rect);
-    }
-    else if(leftMouseIsDown && tool == Tool::ELLIPSE)
-    {
-        painter.setBrush(Qt::white);
-        painter.drawEllipse(rect);
-    }
-    else if(leftMouseIsDown && tool == Tool::TRIANGLE)
-    {
-
-        QPainterPath path;
-
-        path.moveTo(rect.left() + (rect.width() / 2), rect.top());
-        path.lineTo(rect.bottomLeft());
-        path.lineTo(rect.bottomRight());
-        path.lineTo(rect.left() + (rect.width() / 2), rect.top());
-
-        QPen pen(Qt::black);
-        pen.setWidth(2);
-        painter.setPen(pen);
-        painter.drawPath(path);
-        painter.fillPath(path, QBrush(QColor ("white")));
-
-    }
-    else if(leftMouseIsDown && tool == Tool::CONNTECTION_LINE)
-    {
-
-        QPainterPath path;
-
-        path.moveTo(rect.left(), rect.top());
-        path.lineTo(rect.bottomRight());
-
-        QPen pen(Qt::black);
-        pen.setWidth(2);
-        painter.setPen(pen);
-        painter.drawPath(path);
-    }*/
-
 
 }
 

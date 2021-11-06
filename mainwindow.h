@@ -67,7 +67,7 @@ private:
     int lastX{};
     int lastY{};
     bool leftMouseIsDown = false;
-    Tool tool;
+    Tool tool = Tool::MOVE;
     QPainter painter;
     vector<IShape*> shapes;
 
