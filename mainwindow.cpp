@@ -32,7 +32,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 
     QRect rect(x, y, 0, 0);
-    Shape* shape = nullptr;
+    shape = nullptr; // null it every time
     switch(tool)
     {
     case Tool::RECTAGLE:
@@ -72,7 +72,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     {
         if(!isConnectedWithShape(QPoint(event->x(), event->y()), secondID) || firstID == secondID)
         {
-            if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
+            if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr && // if the last pushed element is a connection line.
+               shape!=nullptr) // we can't delete a connected line now because the line was not created (is equal to nullptr)
             {
                 delete shapes.back();
                 shapes.pop_back();
@@ -85,6 +86,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
         }
     }
 
+    firstID = 0;
+    secondID = 0;
     leftMouseIsDown = false;
     lastX = event->x();
     lastY = event->y();

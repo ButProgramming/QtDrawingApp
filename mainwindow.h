@@ -65,6 +65,7 @@ private:
 
 private:
     Ui::MainWindow *ui;
+    Shape* shape = nullptr;
     int x{};
     int y{};
     int lastX{};
