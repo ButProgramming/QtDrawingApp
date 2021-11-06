@@ -33,15 +33,23 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         y = event->y();
     }
 
-    for(auto shape:shapes)
+    if(tool == Tool::MOVE)
     {
-        if(dynamic_cast<IAreaShape*>(shape)!=nullptr)
+        for(auto shape:shapes)
         {
-            QPoint point(event->x(), event->y());
-            if(dynamic_cast<IAreaShape*>(shape)->contains(point))
-                qDebug() << "true!!";
+            if(dynamic_cast<IAreaShape*>(shape)!=nullptr)
+            {
+                QPoint point(event->x(), event->y());
+                if(dynamic_cast<IAreaShape*>(shape)->contains(point))
+                {
+                    dynamic_cast<IAreaShape*>(shape)->setSelected();
+                }
+
+
+            }
         }
     }
+
 
     /*else if(tool==Tool::ELLIPSE)
     {
@@ -181,4 +189,9 @@ void MainWindow::on_actionRectangle_triggered()
 void MainWindow::on_actionConnect_triggered()
 {
     tool = Tool::CONNTECTION_LINE;
+}
+
+void MainWindow::on_actionMove_triggered()
+{
+    tool = Tool::MOVE;
 }

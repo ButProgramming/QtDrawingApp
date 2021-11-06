@@ -1,9 +1,6 @@
 #ifndef ISHAPE_H
 #define ISHAPE_H
 
-/*#include <QMainWindow>
-#include <QObject>
-#include <QWidget>*/
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QPainter>
@@ -20,7 +17,6 @@ class IShape
 {
 public:
     IShape(const QRect& rect) : m_rect(rect) {}
-    IShape(int x, int y, int length, int width) : m_x(x), m_y(y), m_length(length), m_width(width){}
     virtual void draw(QPaintDevice* device) = 0;
 
 protected:
@@ -29,6 +25,7 @@ protected:
     int m_y{};
     int m_length{};
     int m_width{};
+    bool isSelected = false;
 };
 
 class IAreaShape : public IShape
@@ -36,6 +33,14 @@ class IAreaShape : public IShape
 public:
     IAreaShape(const QRect& rect) : IShape(rect) {}
     virtual bool contains(const QPoint& point) = 0;
+    virtual void setSelected() { isSelected = true;}
+    void setNotSelected() { isSelected = false;}
+    virtual void drawSelection(QPainter& painter)
+    {
+        painter.setPen(Qt::DotLine);
+        painter.setBrush(Qt::NoBrush);
+        painter.drawRect(m_rect);
+    }
 };
 
 class Rectangle : public IAreaShape
@@ -45,14 +50,21 @@ public:
     void draw(QPaintDevice *device) override
     {
         QPainter painter(device);
+
+        if(isSelected)
+        {
+            drawSelection(painter);
+            return;
+        }
+
         painter.setBrush(Qt::white);
         painter.drawRect(m_rect);
-        qDebug() << m_x << " " << m_y;
     }
     bool contains(const QPoint& point)
     {
         if(m_rect.contains(point))
             return true;
+
         return false;
     }
 };
@@ -68,7 +80,8 @@ public:
         QPainter painter(device);
         painter.setBrush(Qt::white);
         painter.drawEllipse(m_rect);
-        qDebug() << m_x << " " << m_y;
+        if(isSelected)
+            drawSelection(painter);
     }
     bool contains(const QPoint& point)
     {
@@ -100,6 +113,8 @@ public:
         painter.setPen(pen);
         painter.drawPath(path);
         painter.fillPath(path, QBrush(QColor ("white")));
+        if(isSelected)
+            drawSelection(painter);
     }
 
     bool contains(const QPoint& point)
