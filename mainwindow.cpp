@@ -46,9 +46,13 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         break;
     case Tool::CONNTECTION_LINE:
     {
-        if(isConnectedWithShape(QPoint(event->x(), event->y())))
+        int firstID{};
+        if(isConnectedWithShape(QPoint(event->x(), event->y()), firstID))
+        {
             shape = new ConnectionLine(rect);
-        break;
+            dynamic_cast<ConnectionLine*>(shape)->linkToShape(firstID, NULL);
+        }
+            break;
     }
     case Tool::MOVE:
         selectShape(event);
@@ -65,7 +69,22 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-
+    if(tool == Tool::CONNTECTION_LINE)
+    {
+        int secondID{};
+        if(!isConnectedWithShape(QPoint(event->x(), event->y()), secondID))
+        {
+            if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
+            {
+                delete shapes.back();
+                shapes.pop_back();
+            }
+        }
+        else
+        {
+            dynamic_cast<ConnectionLine*>(shapes.back())->linkToShape(NULL, secondID);
+        }
+    }
 
     leftMouseIsDown = false;
     lastX = event->x();
@@ -78,8 +97,18 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    if(tool!=Tool::MOVE/* || tool!=Tool::SAFE || tool!=Tool::LOAD*/)
-        shapes.back()->updateCreate(lastX, lastY);
+    if(!shapes.empty())
+    {
+        if(tool==Tool::RECTAGLE || tool==Tool::ELLIPSE || tool == Tool::TRIANGLE && leftMouseIsDown)
+            shapes.back()->updateCreate(lastX, lastY);
+
+        else if(tool == Tool::CONNTECTION_LINE && leftMouseIsDown)
+            if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
+                  shapes.back()->updateCreate(lastX, lastY);          // it will work only if a connection line was created,
+                                                                      // in other words isConnectedWithShape -> true (in mousePressEvent)
+
+    }
+
     lastX = event->x();
     lastY = event->y();
     QPoint lastPoint(lastX, lastY);
@@ -96,7 +125,12 @@ void MainWindow::paintEvent(QPaintEvent *event)
 {
     // draw shapes from vector
     for(auto shape:shapes)
+    {
         shape->draw(this);
+        if(dynamic_cast<ConnectionLine*>(shape)!=nullptr)
+           qDebug() << dynamic_cast<ConnectionLine*>(shape)->m_firstIDShape << " " << dynamic_cast<ConnectionLine*>(shape)->m_secondIDShape;
+    }
+
 
     //painter.drawEllipse(rect);
 
@@ -168,12 +202,15 @@ void MainWindow::drawCenters(bool shouldDrawCenters)
         }
 }
 
-bool MainWindow::isConnectedWithShape(QPoint point)
+bool MainWindow::isConnectedWithShape(QPoint point, int& IDConntectedWith)
 {
     for(auto shape:shapes)
         if(dynamic_cast<AreaShape*>(shape)!=nullptr)
             if(dynamic_cast<AreaShape*>(shape)->containsCenter(point))
+            {
+                IDConntectedWith = dynamic_cast<AreaShape*>(shape)->getID();
                 return true;
+            }
 
     return false;
 }

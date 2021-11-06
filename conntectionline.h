@@ -10,11 +10,11 @@ public:
 
     void draw(QPaintDevice* device) override;
 
-    void link(int firstIDLink, int secondIDLink);
+    void linkToShape(int firstIDLink, int secondIDLink);
 
-private:
-    int m_firstIDLink{};
-    int m_secondIDLink{};
+public:
+    int m_firstIDShape{};
+    int m_secondIDShape{};
 
 };
 

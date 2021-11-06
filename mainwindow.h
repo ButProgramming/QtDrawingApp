@@ -51,7 +51,7 @@ private:
     void unselectShapes();
     void moveSelectedShape(const QPoint& lastPoint);
     void drawCenters(bool shouldDrawCenters);
-    bool isConnectedWithShape(QPoint point);
+    bool isConnectedWithShape(QPoint point, int& IDConnectedWith);
     enum class Tool
     {
         SAFE,

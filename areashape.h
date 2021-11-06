@@ -7,11 +7,12 @@
 class AreaShape : public Shape
 {
 public:
-    AreaShape(const QRect& rect) : Shape(rect) {}
+    AreaShape(const QRect& rect) : Shape(rect) { m_ID = ID++; }
 
+    virtual ~AreaShape(){}
     virtual bool contains(const QPoint& point) = 0;
-
     virtual void drawSelection(QPainter& painter);
+
     void setSelected(bool selected) { m_selected = selected;}
     bool isSelected() {return m_selected;}
     void update(int dx, int dy)
@@ -41,8 +42,13 @@ public:
         return false;
 
     }
+
+    int getID() {return m_ID;}
 protected:
     bool m_shouldDrawCenter = false;
+    static int ID;
+public:
+    int m_ID{};
     //void setNotSelected() { isSelected = false;}
 
 };

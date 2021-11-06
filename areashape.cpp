@@ -1,5 +1,6 @@
 #include "areashape.h"
 
+int AreaShape::ID = 1;
 
 void AreaShape::drawSelection(QPainter &painter)
 {

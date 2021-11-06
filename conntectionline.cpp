@@ -15,7 +15,14 @@ void ConnectionLine::draw(QPaintDevice *device)
     painter.drawPath(path);
 }
 
-void ConnectionLine::link(int firstIDLink, int secondIDLink)
+void ConnectionLine::linkToShape(int firstID, int secondID)
 {
-
+    if(firstID!=NULL)
+    {
+        m_firstIDShape = firstID;
+    }
+    else if(secondID!=NULL)
+    {
+        m_secondIDShape = secondID;
+    }
 }

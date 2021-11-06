@@ -21,6 +21,7 @@ class Shape
 {
 public:
     Shape(const QRect& rect) : m_rect(rect) {}
+    virtual ~Shape(){}
     virtual void draw(QPaintDevice* device) = 0;
 
     void updateCreate(int lastX, int lastY)
