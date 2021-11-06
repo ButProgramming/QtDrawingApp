@@ -17,6 +17,7 @@ void Triangle::draw(QPaintDevice *device)
     painter.setPen(pen);
     painter.drawPath(path);
     painter.fillPath(path, QBrush(QColor ("white")));
+
     if(m_selected)
         drawSelection(painter);
 }

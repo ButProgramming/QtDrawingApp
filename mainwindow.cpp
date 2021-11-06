@@ -171,32 +171,16 @@ void MainWindow::moveSelectedShape(const QPoint &lastPoint)
     for(auto shape:shapes)
         if(dynamic_cast<AreaShape*>(shape)!=nullptr)
             if(dynamic_cast<AreaShape*>(shape)->isSelected())
-            {
-                //shape->m_rect.center(lastPoint);
-                //int width = shape->m_rect.width();
-                //int height = shape->m_rect.height();
-
-                //QRect newRect(lastPoint.x(), lastPoint.y(), width, height);
-
-                //shape->m_rect.set(y-lastPoint.y());
-                //QRect tempRect(m_rect);
                 dynamic_cast<AreaShape*>(shape)->update(x-lastPoint.x(), y-lastPoint.y());
-
-            }
 }
 
 void MainWindow::selectShape(QMouseEvent *event)
 {
     for(int i = shapes.size() - 1; i>=0; i--)
-    {
         if(dynamic_cast<AreaShape*>(shapes[i])!=nullptr)
-        {
-            QPoint point(event->x(), event->y());
-            if(dynamic_cast<AreaShape*>(shapes[i])->contains(point))
+            if(dynamic_cast<AreaShape*>(shapes[i])->contains(QPoint(event->x(), event->y())))
             {
                 dynamic_cast<AreaShape*>(shapes[i])->setSelected(true);
                 return;
             }
-        }
-    }
 }

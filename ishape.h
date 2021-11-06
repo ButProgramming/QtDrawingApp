@@ -18,10 +18,10 @@ class IShape
 public:
     IShape(const QRect& rect) : m_rect(rect) {}
     virtual void draw(QPaintDevice* device) = 0;
-    QRect m_rect;
+
 
 protected:
-
+    QRect m_rect;
     int m_x{};
     int m_y{};
     int m_length{};
