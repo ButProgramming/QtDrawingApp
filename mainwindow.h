@@ -5,13 +5,9 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QEvent>
-
-#include <QObject>
-#include <QCursor>
-#include <QPoint>
 #include <QPainterPath>
 
+// classes
 #include "rectangle.h"
 #include "ellipse.h"
 #include "triangle.h"
@@ -33,7 +29,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    //virtual
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void paintEvent(QPaintEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
@@ -51,10 +46,10 @@ private slots:
     void on_actionMove_triggered();
 
 private:
-    Ui::MainWindow *ui;
-    enum class Tool // добавление "class" к enum определяет перечисление с ограниченной областью видимости, вместо стандартного "глобального" перечисления
+    void selectShape(QMouseEvent *event);
+    enum class Tool
     {
-        SAFE, // LEMON находится внутри той же области видимости, что и Fruits
+        SAFE,
         LOAD,
         ELLIPSE,
         RECTAGLE,
@@ -62,14 +57,18 @@ private:
         CONNTECTION_LINE,
         MOVE
     };
+
+private:
+    Ui::MainWindow *ui;
+    int x{};
+    int y{};
+    int lastX{};
+    int lastY{};
+    bool leftMouseIsDown = false;
     Tool tool;
     QPainter painter;
-    int x;
-    int y;
-    int lastX;
-    int lastY;
-    bool leftMouseIsDown = false;
     vector<IShape*> shapes;
 
 };
+
 #endif // MAINWINDOW_H

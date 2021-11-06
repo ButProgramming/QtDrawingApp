@@ -14,16 +14,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_actionEllipse_triggered()
-{
-    tool = Tool::ELLIPSE;
-}
-
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-
-
 
     leftMouseIsDown = true;
 
@@ -35,57 +27,40 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
     if(tool == Tool::MOVE)
     {
-        for(auto shape:shapes)
-        {
-            if(dynamic_cast<AreaShape*>(shape)!=nullptr)
-            {
-                QPoint point(event->x(), event->y());
-                if(dynamic_cast<AreaShape*>(shape)->contains(point))
-                {
-                    dynamic_cast<AreaShape*>(shape)->setSelected();
-                }
-
-
-            }
-        }
+        selectShape(event);
     }
 
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(tool == Tool::RECTAGLE)
+    QRect rect(x, y, event->x()- x, event->y() - y);
+    IShape* shape = nullptr;
+    switch(tool)
     {
-        QRect rect(x, y, event->x()- x, event->y() - y);
-        IShape* shape = new Rectangle(rect);
-        shapes.push_back(shape);
+    case Tool::RECTAGLE:
+        shape = new Rectangle(rect);
+        break;
+    case Tool::ELLIPSE:
+        shape = new Ellipse(rect);
+        break;
+    case Tool::TRIANGLE:
+        shape = new Triangle(rect);
+        break;
+    case Tool::CONNTECTION_LINE:
+        shape = new ConnectionLine(rect);
+        break;
+    default:
+        break;
     }
-    else if(tool == Tool::ELLIPSE)
-    {
-        QRect rect(x, y, event->x()- x, event->y() - y);
-        IShape* shape = new Ellipse(rect);
-        //IShape* shape = new Ellipse(x, y, event->x()- x, event->y() - y);
+    // if the tool was not MOVE, SAFE or LOAD
+    if(shape!=nullptr)
         shapes.push_back(shape);
-    }
-    else if(tool == Tool::TRIANGLE)
-    {
-        QRect rect(x, y, event->x()- x, event->y() - y);
-        IShape* shape = new Triangle(rect);
-        shapes.push_back(shape);
-    }
-    else if(tool == Tool::CONNTECTION_LINE)
-    {
-        QRect rect(x, y, event->x()- x, event->y() - y);
-        IShape* shape = new ConnectionLine(rect);
-        shapes.push_back(shape);
-    }
 
     leftMouseIsDown = false;
     lastX = event->x();
     lastY = event->y();
     update();
-    QString s = QString("My RELEASE key");
-    qDebug() << s;
 
 }
 
@@ -99,37 +74,33 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 void MainWindow::paintEvent(QPaintEvent *event)
 {
 
+    // draw shapes from vector
     for(auto shape:shapes)
-    {
         shape->draw(this);
-    }
 
+
+    // draw a shape that is going to be in the vector
     QPainter painter(this);
+    QRect rect(x, y, lastX - x, lastY - y);
     if(leftMouseIsDown && tool == Tool::RECTAGLE)
     {
-        QRect rect(x, y, lastX - x, lastY - y);
         painter.setBrush(Qt::white);
         painter.drawRect(rect);
     }
     else if(leftMouseIsDown && tool == Tool::ELLIPSE)
     {
-        QRect rect(x, y, lastX - x, lastY - y);
         painter.setBrush(Qt::white);
         painter.drawEllipse(rect);
     }
     else if(leftMouseIsDown && tool == Tool::TRIANGLE)
     {
-        QRect rect(x, y, lastX - x, lastY - y);
-
 
         QPainterPath path;
-
 
         path.moveTo(rect.left() + (rect.width() / 2), rect.top());
         path.lineTo(rect.bottomLeft());
         path.lineTo(rect.bottomRight());
         path.lineTo(rect.left() + (rect.width() / 2), rect.top());
-
 
         QPen pen(Qt::black);
         pen.setWidth(2);
@@ -140,7 +111,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
     else if(leftMouseIsDown && tool == Tool::CONNTECTION_LINE)
     {
-        QRect rect(x, y, lastX - x, lastY - y);
 
         QPainterPath path;
 
@@ -153,10 +123,11 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.drawPath(path);
     }
 
+}
 
-
-
-
+void MainWindow::on_actionEllipse_triggered()
+{
+    tool = Tool::ELLIPSE;
 }
 
 void MainWindow::on_actionTriangle_triggered()
@@ -177,4 +148,19 @@ void MainWindow::on_actionConnect_triggered()
 void MainWindow::on_actionMove_triggered()
 {
     tool = Tool::MOVE;
+}
+
+void MainWindow::selectShape(QMouseEvent *event)
+{
+    for(auto shape:shapes)
+    {
+        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
+        {
+            QPoint point(event->x(), event->y());
+            if(dynamic_cast<AreaShape*>(shape)->contains(point))
+            {
+                dynamic_cast<AreaShape*>(shape)->setSelected();
+            }
+        }
+    }
 }
