@@ -7,7 +7,7 @@ void Ellipse::draw(QPaintDevice *device)
     QPainter painter(device);
     painter.setBrush(Qt::white);
     painter.drawEllipse(m_rect);
-    if(isSelected)
+    if(m_selected)
         drawSelection(painter);
 
 }

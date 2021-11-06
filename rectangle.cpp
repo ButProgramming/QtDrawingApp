@@ -4,7 +4,7 @@ void Rectangle::draw(QPaintDevice *device)
 {
     QPainter painter(device);
 
-    if(isSelected)
+    if(m_selected)
     {
         drawSelection(painter);
         return;
@@ -20,4 +20,11 @@ bool Rectangle::contains(const QPoint &point)
         return true;
 
     return false;
+}
+
+void Rectangle::drawSelection(QPainter &painter)
+{
+    painter.setPen(Qt::DotLine);
+    painter.setBrush(Qt::white);
+    painter.drawRect(m_rect);
 }

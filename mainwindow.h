@@ -47,6 +47,8 @@ private slots:
 
 private:
     void selectShape(QMouseEvent *event);
+    void unselectShapes(QMouseEvent *event);
+    void moveSelectedShape(const QPoint& lastPoint);
     enum class Tool
     {
         SAFE,

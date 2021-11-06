@@ -11,9 +11,15 @@ public:
 
     virtual bool contains(const QPoint& point) = 0;
 
-    void drawSelection(QPainter& painter);
-    void setSelected() { isSelected = true;}
-    void setNotSelected() { isSelected = false;}
+    virtual void drawSelection(QPainter& painter);
+    void setSelected(bool selected) { m_selected = selected;}
+    bool isSelected() {return m_selected;}
+    void update(int dx, int dy)
+    {
+        m_rect.setBottomLeft(QPoint(m_rect.bottomLeft().x() - dx, m_rect.bottomLeft().y() - dy));
+        m_rect.setTopRight(QPoint(m_rect.topRight().x() - dx, m_rect.topRight().y() - dy));
+    }
+    //void setNotSelected() { isSelected = false;}
 
 };
 

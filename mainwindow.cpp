@@ -17,6 +17,8 @@ MainWindow::~MainWindow()
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 
+    unselectShapes(event);
+
     leftMouseIsDown = true;
 
     if(event->button() == Qt::LeftButton)
@@ -26,9 +28,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 
     if(tool == Tool::MOVE)
-    {
         selectShape(event);
-    }
 
 }
 
@@ -60,6 +60,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     leftMouseIsDown = false;
     lastX = event->x();
     lastY = event->y();
+    QPoint lastPoint(lastX, lastY);
+    moveSelectedShape(lastPoint);
     update();
 
 }
@@ -68,6 +70,13 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     lastX = event->x();
     lastY = event->y();
+    QPoint lastPoint(lastX, lastY);
+    moveSelectedShape(lastPoint);
+    if(tool==Tool::MOVE && leftMouseIsDown)
+    {
+        x = lastX;
+        y = lastY;
+    }
     update();
 }
 
@@ -77,7 +86,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
     // draw shapes from vector
     for(auto shape:shapes)
         shape->draw(this);
-
 
     // draw a shape that is going to be in the vector
     QPainter painter(this);
@@ -123,6 +131,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.drawPath(path);
     }
 
+
 }
 
 void MainWindow::on_actionEllipse_triggered()
@@ -150,16 +159,43 @@ void MainWindow::on_actionMove_triggered()
     tool = Tool::MOVE;
 }
 
-void MainWindow::selectShape(QMouseEvent *event)
+void MainWindow::unselectShapes(QMouseEvent *event)
 {
     for(auto shape:shapes)
-    {
         if(dynamic_cast<AreaShape*>(shape)!=nullptr)
+            dynamic_cast<AreaShape*>(shape)->setSelected(false);
+}
+
+void MainWindow::moveSelectedShape(const QPoint &lastPoint)
+{
+    for(auto shape:shapes)
+        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
+            if(dynamic_cast<AreaShape*>(shape)->isSelected())
+            {
+                //shape->m_rect.center(lastPoint);
+                //int width = shape->m_rect.width();
+                //int height = shape->m_rect.height();
+
+                //QRect newRect(lastPoint.x(), lastPoint.y(), width, height);
+
+                //shape->m_rect.set(y-lastPoint.y());
+                //QRect tempRect(m_rect);
+                dynamic_cast<AreaShape*>(shape)->update(x-lastPoint.x(), y-lastPoint.y());
+
+            }
+}
+
+void MainWindow::selectShape(QMouseEvent *event)
+{
+    for(int i = shapes.size() - 1; i>=0; i--)
+    {
+        if(dynamic_cast<AreaShape*>(shapes[i])!=nullptr)
         {
             QPoint point(event->x(), event->y());
-            if(dynamic_cast<AreaShape*>(shape)->contains(point))
+            if(dynamic_cast<AreaShape*>(shapes[i])->contains(point))
             {
-                dynamic_cast<AreaShape*>(shape)->setSelected();
+                dynamic_cast<AreaShape*>(shapes[i])->setSelected(true);
+                return;
             }
         }
     }
