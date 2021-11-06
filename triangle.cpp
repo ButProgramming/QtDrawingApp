@@ -20,6 +20,8 @@ void Triangle::draw(QPaintDevice *device)
 
     if(m_selected)
         drawSelection(painter);
+    if(m_shouldDrawCenter)
+        painter.drawEllipse(m_rect.center(), consts::sizeOfCenterEllipse, consts::sizeOfCenterEllipse);
 }
 
 bool Triangle::contains(const QPoint &point)

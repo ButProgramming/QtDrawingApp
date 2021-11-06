@@ -17,7 +17,7 @@ MainWindow::~MainWindow()
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 
-    unselectShapes(event);
+    unselectShapes();
 
     leftMouseIsDown = true;
 
@@ -25,12 +25,11 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     {
         x = event->x();
         y = event->y();
-       lastX = x;
-       lastY = y;
+        lastX = x;
+        lastY = y;
     }
 
-    if(tool == Tool::MOVE)
-        selectShape(event);
+
 
     QRect rect(x, y, 0, 0);
     IShape* shape = nullptr;
@@ -47,6 +46,9 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         break;
     case Tool::CONNTECTION_LINE:
         shape = new ConnectionLine(rect);
+        break;
+    case Tool::MOVE:
+        selectShape(event);
         break;
     default:
         break;
@@ -88,7 +90,6 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-
     // draw shapes from vector
     for(auto shape:shapes)
         shape->draw(this);
@@ -98,29 +99,43 @@ void MainWindow::paintEvent(QPaintEvent *event)
 void MainWindow::on_actionEllipse_triggered()
 {
     tool = Tool::ELLIPSE;
+    unselectShapes();
+    drawCenters(false);
+    update();
 }
 
 void MainWindow::on_actionTriangle_triggered()
 {
     tool = Tool::TRIANGLE;
+    unselectShapes();
+    drawCenters(false);
+    update();
 }
 
 void MainWindow::on_actionRectangle_triggered()
 {
     tool = Tool::RECTAGLE;
+    unselectShapes();
+    drawCenters(false);
+    update();
 }
 
 void MainWindow::on_actionConnect_triggered()
 {
     tool = Tool::CONNTECTION_LINE;
+    unselectShapes();
+    drawCenters(true);
+    update();
 }
 
 void MainWindow::on_actionMove_triggered()
 {
     tool = Tool::MOVE;
+    drawCenters(false);
+    update();
 }
 
-void MainWindow::unselectShapes(QMouseEvent *event)
+void MainWindow::unselectShapes()
 {
     for(auto shape:shapes)
         if(dynamic_cast<AreaShape*>(shape)!=nullptr)
@@ -133,6 +148,18 @@ void MainWindow::moveSelectedShape(const QPoint &lastPoint)
         if(dynamic_cast<AreaShape*>(shape)!=nullptr)
             if(dynamic_cast<AreaShape*>(shape)->isSelected())
                 dynamic_cast<AreaShape*>(shape)->update(x-lastPoint.x(), y-lastPoint.y());
+}
+
+void MainWindow::drawCenters(bool shouldDrawCenters)
+{
+    for(auto shape:shapes)
+        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
+        {
+            if(shouldDrawCenters)
+                dynamic_cast<AreaShape*>(shape)->drawCenter(true);
+            else
+                dynamic_cast<AreaShape*>(shape)->drawCenter(false);
+        }
 }
 
 void MainWindow::selectShape(QMouseEvent *event)

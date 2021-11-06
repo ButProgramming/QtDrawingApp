@@ -12,6 +12,10 @@
 #include <QDebug>
 #include <QGraphicsEllipseItem>
 
+namespace consts
+{
+    const int sizeOfCenterEllipse = 3;
+}
 
 class IShape
 {

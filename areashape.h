@@ -19,6 +19,12 @@ public:
         m_rect.setBottomLeft(QPoint(m_rect.bottomLeft().x() - dx, m_rect.bottomLeft().y() - dy));
         m_rect.setTopRight(QPoint(m_rect.topRight().x() - dx, m_rect.topRight().y() - dy));
     }
+    void drawCenter(bool shouldDrawCenter)
+    {
+        m_shouldDrawCenter = shouldDrawCenter;
+    }
+protected:
+    bool m_shouldDrawCenter = false;
     //void setNotSelected() { isSelected = false;}
 
 };

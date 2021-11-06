@@ -12,6 +12,8 @@ void Rectangle::draw(QPaintDevice *device)
 
     painter.setBrush(Qt::white);
     painter.drawRect(m_rect);
+    if(m_shouldDrawCenter)
+        painter.drawEllipse(m_rect.center(), consts::sizeOfCenterEllipse, consts::sizeOfCenterEllipse);
 }
 
 bool Rectangle::contains(const QPoint &point)
