@@ -14,14 +14,15 @@
 
 namespace consts
 {
-    const int sizeOfCenterEllipse = 3;
+    const int sizeOfCenterEllipse = 10;
 }
 
-class IShape
+class Shape
 {
 public:
-    IShape(const QRect& rect) : m_rect(rect) {}
+    Shape(const QRect& rect) : m_rect(rect) {}
     virtual void draw(QPaintDevice* device) = 0;
+
     void updateCreate(int lastX, int lastY)
     {
         m_rect.setBottomRight(QPoint(lastX, lastY));

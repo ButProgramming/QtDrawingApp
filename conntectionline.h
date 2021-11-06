@@ -1,26 +1,20 @@
 #ifndef CONNTECTIONLINE_H
 #define CONNTECTIONLINE_H
 
-#include "ishape.h"
+#include "shape.h"
 
-class ConnectionLine : public IShape
+class ConnectionLine : public Shape
 {
 public:
-    ConnectionLine(const QRect& rect) : IShape(rect){}
+    ConnectionLine(const QRect& rect) : Shape(rect){}
 
-    void draw(QPaintDevice* device) override
-    {
-        QPainter painter(device);
-        QPainterPath path;
+    void draw(QPaintDevice* device) override;
 
-        path.moveTo(m_rect.left(), m_rect.top());
-        path.lineTo(m_rect.bottomRight());
+    void link(int firstIDLink, int secondIDLink);
 
-        QPen pen(Qt::black);
-        pen.setWidth(2);
-        painter.setPen(pen);
-        painter.drawPath(path);
-    }
+private:
+    int m_firstIDLink{};
+    int m_secondIDLink{};
 
 };
 

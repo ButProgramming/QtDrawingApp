@@ -1,13 +1,13 @@
 #ifndef AREASHAPE_H
 #define AREASHAPE_H
 
-#include "ishape.h"
+#include "shape.h"
 
 
-class AreaShape : public IShape
+class AreaShape : public Shape
 {
 public:
-    AreaShape(const QRect& rect) : IShape(rect) {}
+    AreaShape(const QRect& rect) : Shape(rect) {}
 
     virtual bool contains(const QPoint& point) = 0;
 
@@ -22,6 +22,24 @@ public:
     void drawCenter(bool shouldDrawCenter)
     {
         m_shouldDrawCenter = shouldDrawCenter;
+    }
+
+    bool containsCenter(QPoint point)
+    {
+        QRect rect(
+                   m_rect.center().x() - consts::sizeOfCenterEllipse/2,
+                   m_rect.center().y() - consts::sizeOfCenterEllipse/2,
+                   consts::sizeOfCenterEllipse*2,
+                   consts::sizeOfCenterEllipse*2
+                   );
+        QGraphicsEllipseItem centerEllipse(rect);
+        qDebug() << m_rect.center();
+        //QGraphicsEllipseItem centerEllipse(0, 0, 1000, 1000);
+        if(centerEllipse.contains(point))
+            return true;
+
+        return false;
+
     }
 protected:
     bool m_shouldDrawCenter = false;

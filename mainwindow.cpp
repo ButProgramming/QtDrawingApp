@@ -32,7 +32,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 
     QRect rect(x, y, 0, 0);
-    IShape* shape = nullptr;
+    Shape* shape = nullptr;
     switch(tool)
     {
     case Tool::RECTAGLE:
@@ -45,14 +45,18 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         shape = new Triangle(rect);
         break;
     case Tool::CONNTECTION_LINE:
-        shape = new ConnectionLine(rect);
+    {
+        if(isConnectedWithShape(QPoint(event->x(), event->y())))
+            shape = new ConnectionLine(rect);
         break;
+    }
     case Tool::MOVE:
         selectShape(event);
         break;
     default:
         break;
     }
+    qDebug() << shape;
     // if the tool was not MOVE, SAFE or LOAD
     if(shape!=nullptr)
         shapes.push_back(shape);
@@ -93,6 +97,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
     // draw shapes from vector
     for(auto shape:shapes)
         shape->draw(this);
+
+    //painter.drawEllipse(rect);
 
 }
 
@@ -160,6 +166,16 @@ void MainWindow::drawCenters(bool shouldDrawCenters)
             else
                 dynamic_cast<AreaShape*>(shape)->drawCenter(false);
         }
+}
+
+bool MainWindow::isConnectedWithShape(QPoint point)
+{
+    for(auto shape:shapes)
+        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
+            if(dynamic_cast<AreaShape*>(shape)->containsCenter(point))
+                return true;
+
+    return false;
 }
 
 void MainWindow::selectShape(QMouseEvent *event)

@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPath>
+#include <QMessageBox>
 
 // classes
 #include "rectangle.h"
@@ -50,6 +51,7 @@ private:
     void unselectShapes();
     void moveSelectedShape(const QPoint& lastPoint);
     void drawCenters(bool shouldDrawCenters);
+    bool isConnectedWithShape(QPoint point);
     enum class Tool
     {
         SAFE,
@@ -70,7 +72,7 @@ private:
     bool leftMouseIsDown = false;
     Tool tool = Tool::MOVE;
     QPainter painter;
-    vector<IShape*> shapes;
+    vector<Shape*> shapes;
 
 };
 

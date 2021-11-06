@@ -11,6 +11,7 @@ void Ellipse::draw(QPaintDevice *device)
         drawSelection(painter);
     if(m_shouldDrawCenter)
         painter.drawEllipse(m_rect.center(), consts::sizeOfCenterEllipse, consts::sizeOfCenterEllipse);
+    qDebug() << m_rect.center() << "from ellipse draw()";
 
 }
 
