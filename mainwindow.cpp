@@ -25,16 +25,14 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     {
         x = event->x();
         y = event->y();
+        lastX = x;
+        lastY = y;
     }
 
     if(tool == Tool::MOVE)
         selectShape(event);
 
-}
-
-void MainWindow::mouseReleaseEvent(QMouseEvent *event)
-{
-    QRect rect(x, y, event->x()- x, event->y() - y);
+    QRect rect(x, y, 0, 0);
     IShape* shape = nullptr;
     switch(tool)
     {
@@ -57,6 +55,12 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     if(shape!=nullptr)
         shapes.push_back(shape);
 
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+
+
     leftMouseIsDown = false;
     lastX = event->x();
     lastY = event->y();
@@ -68,6 +72,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
+    shapes.back()->updateCreate(lastX, lastY);
     lastX = event->x();
     lastY = event->y();
     QPoint lastPoint(lastX, lastY);
@@ -88,7 +93,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         shape->draw(this);
 
     // draw a shape that is going to be in the vector
-    QPainter painter(this);
+    /*QPainter painter(this);
     QRect rect(x, y, lastX - x, lastY - y);
     if(leftMouseIsDown && tool == Tool::RECTAGLE)
     {
@@ -129,7 +134,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
         pen.setWidth(2);
         painter.setPen(pen);
         painter.drawPath(path);
-    }
+    }*/
 
 
 }

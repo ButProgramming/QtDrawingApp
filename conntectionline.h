@@ -21,6 +21,7 @@ public:
         painter.setPen(pen);
         painter.drawPath(path);
     }
+
 };
 
 #endif // CONNTECTIONLINE_H

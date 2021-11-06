@@ -18,6 +18,10 @@ class IShape
 public:
     IShape(const QRect& rect) : m_rect(rect) {}
     virtual void draw(QPaintDevice* device) = 0;
+    void updateCreate(int lastX, int lastY)
+    {
+        m_rect.setBottomRight(QPoint(lastX, lastY));
+    };
 
 
 protected:
