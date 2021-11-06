@@ -12,7 +12,10 @@
 #include <QPoint>
 #include <QPainterPath>
 
-#include "ishape.h"
+#include "rectangle.h"
+#include "ellipse.h"
+#include "triangle.h"
+#include "conntectionline.h"
 
 //stl
 #include <vector>
@@ -67,11 +70,6 @@ private:
     int lastY;
     bool leftMouseIsDown = false;
     vector<IShape*> shapes;
-
-
-
-    //vector<
-
 
 };
 #endif // MAINWINDOW_H

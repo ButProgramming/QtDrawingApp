@@ -37,12 +37,12 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     {
         for(auto shape:shapes)
         {
-            if(dynamic_cast<IAreaShape*>(shape)!=nullptr)
+            if(dynamic_cast<AreaShape*>(shape)!=nullptr)
             {
                 QPoint point(event->x(), event->y());
-                if(dynamic_cast<IAreaShape*>(shape)->contains(point))
+                if(dynamic_cast<AreaShape*>(shape)->contains(point))
                 {
-                    dynamic_cast<IAreaShape*>(shape)->setSelected();
+                    dynamic_cast<AreaShape*>(shape)->setSelected();
                 }
 
 
@@ -50,23 +50,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         }
     }
 
-
-    /*else if(tool==Tool::ELLIPSE)
-    {
-        if(event->button() == Qt::LeftButton)
-        {
-            x = event->x();
-            y = event->y();
-        }
-    }
-    else if(tool == Tool::TRIANGLE)
-    {
-        if(event->button() == Qt::LeftButton)
-        {
-            x = event->x();
-            y = event->y();
-        }
-    }*/
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
