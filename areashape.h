@@ -28,13 +28,13 @@ public:
     bool containsCenter(QPoint point)
     {
         QRect rect(
-                   m_rect.center().x() - consts::sizeOfCenterEllipse/2,
-                   m_rect.center().y() - consts::sizeOfCenterEllipse/2,
+                   m_rect.center().x() - consts::sizeOfCenterEllipse,
+                   m_rect.center().y() - consts::sizeOfCenterEllipse,
                    consts::sizeOfCenterEllipse*2,
                    consts::sizeOfCenterEllipse*2
                    );
         QGraphicsEllipseItem centerEllipse(rect);
-        qDebug() << m_rect.center();
+
         //QGraphicsEllipseItem centerEllipse(0, 0, 1000, 1000);
         if(centerEllipse.contains(point))
             return true;

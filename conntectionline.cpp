@@ -26,3 +26,28 @@ void ConnectionLine::linkToShape(int firstID, int secondID)
         m_secondIDShape = secondID;
     }
 }
+
+void ConnectionLine::updateConnection(const vector<Shape *> &shapes)
+{
+
+    if(!m_firstIDShape || !m_secondIDShape)
+        return;
+
+    qDebug() << "here2";
+
+    for(auto shape:shapes)
+    {
+        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
+        {
+            if(dynamic_cast<AreaShape*>(shape)->getID() == m_firstIDShape)
+            {
+
+                m_rect.setBottomRight(shape->getCenter());
+            }
+            if(dynamic_cast<AreaShape*>(shape)->getID() == m_secondIDShape)
+            {
+                m_rect.setTopLeft(shape->getCenter());
+            }
+        }
+    }
+}

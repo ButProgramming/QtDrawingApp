@@ -12,9 +12,12 @@
 #include <QDebug>
 #include <QGraphicsEllipseItem>
 
+#include <vector>
+using namespace std;
+
 namespace consts
 {
-    const int sizeOfCenterEllipse = 10;
+    const int sizeOfCenterEllipse = 20;
 }
 
 class Shape
@@ -28,6 +31,11 @@ public:
     {
         m_rect.setBottomRight(QPoint(lastX, lastY));
     };
+
+    QPoint getCenter()
+    {
+        return m_rect.center();
+    }
 
 
 protected:

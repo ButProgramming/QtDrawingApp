@@ -46,7 +46,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         break;
     case Tool::CONNTECTION_LINE:
     {
-        int firstID{};
         if(isConnectedWithShape(QPoint(event->x(), event->y()), firstID))
         {
             shape = new ConnectionLine(rect);
@@ -60,7 +59,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     default:
         break;
     }
-    qDebug() << shape;
+
     // if the tool was not MOVE, SAFE or LOAD
     if(shape!=nullptr)
         shapes.push_back(shape);
@@ -71,8 +70,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
     if(tool == Tool::CONNTECTION_LINE)
     {
-        int secondID{};
-        if(!isConnectedWithShape(QPoint(event->x(), event->y()), secondID))
+        if(!isConnectedWithShape(QPoint(event->x(), event->y()), secondID) || firstID == secondID)
         {
             if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
             {
@@ -83,6 +81,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
         else
         {
             dynamic_cast<ConnectionLine*>(shapes.back())->linkToShape(NULL, secondID);
+            dynamic_cast<ConnectionLine*>(shapes.back())->updateConnection(shapes);
         }
     }
 
@@ -118,6 +117,16 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
         x = lastX;
         y = lastY;
     }
+
+    if(leftMouseIsDown)
+    {
+        for(auto shape:shapes)
+        {
+            if(dynamic_cast<ConnectionLine*>(shape)!=nullptr)
+                dynamic_cast<ConnectionLine*>(shape)->updateConnection(shapes);
+        }
+    }
+
     update();
 }
 

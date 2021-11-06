@@ -70,6 +70,8 @@ private:
     int lastX{};
     int lastY{};
     bool leftMouseIsDown = false;
+    int firstID{};
+    int secondID{};
     Tool tool = Tool::MOVE;
     QPainter painter;
     vector<Shape*> shapes;
