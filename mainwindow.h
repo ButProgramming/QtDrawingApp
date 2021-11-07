@@ -81,10 +81,12 @@ private:
 private:
     Ui::MainWindow *ui;
     Shape* shape = nullptr;
-    int x{};
-    int y{};
-    int lastX{};
-    int lastY{};
+    QPoint point;
+    QPoint lastPoint;
+    //int x{};
+    //int y{};
+    //int lastX{};
+    //int lastY{};
     bool leftMouseIsDown = false;
     int firstID{};
     int secondID{};

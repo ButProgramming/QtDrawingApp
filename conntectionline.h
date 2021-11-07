@@ -16,7 +16,7 @@ public:
     void updateConnection(const std::vector<Shape*>& shapes);
     void safe(QDataStream &out) override;
     void load(QDataStream& in) override;
-    void updateCreate(int lastX, int lastY) override;
+    void updateCreate(const QPoint& lastPoint) override;
 
 private:
     int m_firstIDShape{};

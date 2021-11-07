@@ -38,14 +38,13 @@ class Shape
 {
 public:
     Shape() {}
-    Shape(const QRect& rect) : m_rect(rect) {}
+    //Shape(const QRect& rect) : m_rect(rect) {}
     Shape(const QPoint& point) : m_rect(QRect(point.x(), point.y(), NULL, NULL)) {}
     virtual ~Shape(){}
     virtual void draw(QPaintDevice* device) = 0;
     virtual void safe(QDataStream& out) = 0;
     virtual void load(QDataStream& in) = 0;
-
-    virtual void updateCreate(int lastX, int lastY) = 0;
+    virtual void updateCreate(const QPoint& lastPoint) = 0;
 
 
 

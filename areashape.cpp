@@ -12,10 +12,6 @@ void AreaShape::drawSelection(QPainter &painter)
 void AreaShape::safe(QDataStream &out)
 {
     out << m_rect;
-    //out << m_x;
-    //out << m_y;
-    //out << m_length;
-    //out << m_width;
     out << m_selected;
     out << m_shouldDrawCenter;
     out << m_ID;
@@ -27,17 +23,13 @@ void AreaShape::load(QDataStream &in)
     unsigned short int type{};
 
     in >> m_rect;
-    //in >> m_x;
-    //in >> m_y;
-    //in >> m_length;
-    //in >> m_width;
     in >> m_selected;
     in >> m_shouldDrawCenter;
     in >> m_ID;
 
 }
 
-void AreaShape::updateCreate(int lastX, int lastY)
+void AreaShape::updateCreate(const QPoint& lastPoint)
 {
-    m_rect.setBottomRight(QPoint(lastX, lastY));
+    m_rect.setBottomRight(lastPoint);
 }

@@ -23,17 +23,19 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
     if(event->button() == Qt::LeftButton)
     {
-        x = event->x();
-        y = event->y();
+        point.setX(event->x());
+        point.setY(event->y());
+        //x = event->x();
+        //y = event->y();
 
         // avoid false shape printing, when a new shape is creating
-        lastX = x;
-        lastY = y;
+        lastPoint = point;
+        //lastX = x;
+        //lastY = y;
     }
 
 
-    QRect rect(x, y, NULL, NULL);
-    QPoint point(x, y);
+    //QPoint point(x, y);
     shape = nullptr; // null it every time
     switch(tool)
     {
@@ -47,14 +49,12 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         shape = new Triangle(point);
         break;
     case Tool::CONNTECTION_LINE:
-    {
         if(isConnectedWithShape(QPoint(event->x(), event->y()), firstID))
         {
             shape = new ConnectionLine(point);
             dynamic_cast<ConnectionLine*>(shape)->linkToShape(firstID, NULL);
         }
         break;
-    }
     case Tool::MOVE:
         selectShape(event);
         break;
@@ -73,23 +73,26 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     if(!shapes.empty())
     {
         if(tool==Tool::RECTAGLE || tool==Tool::ELLIPSE || tool == Tool::TRIANGLE && leftMouseIsDown)
-            shapes.back()->updateCreate(lastX, lastY);
+            shapes.back()->updateCreate(lastPoint);
 
         else if(tool == Tool::CONNTECTION_LINE && leftMouseIsDown)
             if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
-                shapes.back()->updateCreate(lastX, lastY);            // it will work only if a connection line was created,
+                shapes.back()->updateCreate(lastPoint);            // it will work only if a connection line was created,
                                                                       // in other words isConnectedWithShape -> true (in mousePressEvent)
 
     }
 
-    lastX = event->x();
-    lastY = event->y();
-    QPoint lastPoint(lastX, lastY);
+    //lastX = event->x();
+    //lastY = event->y();
+    lastPoint.setX(event->x());
+    lastPoint.setY(event->y());
+    //QPoint lastPoint(lastX, lastY);
     moveSelectedShape(lastPoint);
     if(tool==Tool::MOVE && leftMouseIsDown)
     {
-        x = lastX;
-        y = lastY;
+        point = lastPoint;
+        //x = lastX;
+        //y = lastY;
     }
 
     if(leftMouseIsDown)
@@ -150,10 +153,12 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
     leftMouseIsDown = false;
 
-    lastX = event->x();
-    lastY = event->y();
+    //lastX = event->x();
+    //lastY = event->y();
+    lastPoint.setX(event->x());
+    lastPoint.setY(event->y());
 
-    QPoint lastPoint(lastX, lastY);
+    //QPoint lastPoint(lastX, lastY);
     moveSelectedShape(lastPoint);
     update();
 
@@ -181,7 +186,7 @@ void MainWindow::moveSelectedShape(const QPoint &lastPoint)
     for(auto shape:shapes)
         if(dynamic_cast<AreaShape*>(shape)!=nullptr)
             if(dynamic_cast<AreaShape*>(shape)->isSelected())
-                dynamic_cast<AreaShape*>(shape)->update(x-lastPoint.x(), y-lastPoint.y());
+                dynamic_cast<AreaShape*>(shape)->update(point.x()-lastPoint.x(), point.y()-lastPoint.y());
 }
 
 void MainWindow::drawCenters(bool shouldDrawCenters)

@@ -8,7 +8,7 @@ class AreaShape : public Shape
 {
 public:
     //AreaShape(const QRect& rect) : Shape(rect) { m_ID = ID++; }
-    AreaShape(const QPoint& point) : Shape(QRect(point.x(), point.y(), NULL, NULL)) { m_ID = ID++; }
+    AreaShape(const QPoint& point) : Shape(point) { m_ID = ID++; }
 
     virtual ~AreaShape(){}
     virtual bool contains(const QPoint& point) = 0;
@@ -35,11 +35,11 @@ public:
     bool containsCenter(QPoint point)
     {
         QRect rect(
-                   m_rect.center().x() - consts::sizeOfCenterEllipse,
-                   m_rect.center().y() - consts::sizeOfCenterEllipse,
-                   consts::sizeOfCenterEllipse*2,
-                   consts::sizeOfCenterEllipse*2
-                   );
+                    m_rect.center().x() - consts::sizeOfCenterEllipse,
+                    m_rect.center().y() - consts::sizeOfCenterEllipse,
+                    consts::sizeOfCenterEllipse*2,
+                    consts::sizeOfCenterEllipse*2
+                    );
         QGraphicsEllipseItem centerEllipse(rect);
 
         if(centerEllipse.contains(point))
@@ -51,7 +51,7 @@ public:
 
     int getID() {return m_ID;}
 
-    void updateCreate(int lastX, int lastY) override;
+    void updateCreate(const QPoint& lastPoint) override;
 protected:
     bool m_shouldDrawCenter = false;
     static int ID;
