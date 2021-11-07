@@ -172,6 +172,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     {
         shape->draw(this);
     }
+
 }
 
 void MainWindow::unselectShapes()
@@ -186,7 +187,7 @@ void MainWindow::moveSelectedShape(const QPoint &lastPoint)
     for(auto shape:shapes)
         if(dynamic_cast<AreaShape*>(shape)!=nullptr)
             if(dynamic_cast<AreaShape*>(shape)->isSelected())
-                dynamic_cast<AreaShape*>(shape)->update(point.x()-lastPoint.x(), point.y()-lastPoint.y());
+                dynamic_cast<AreaShape*>(shape)->update(point - lastPoint);
 }
 
 void MainWindow::drawCenters(bool shouldDrawCenters)
@@ -274,36 +275,20 @@ void MainWindow::safeFile()
 
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_5_12);
-    out << (int)shapes.size();
+    out << static_cast<int>(shapes.size());
 
     for(auto shape:shapes)
     {
         if(dynamic_cast<Ellipse*>(shape)!=nullptr)
-        {
             out << static_cast<unsigned short int>(Type::ELLIPSE);
-            qDebug() << static_cast<unsigned short int>(Type::ELLIPSE);
-            shape->safe(out);
-        }
         else if(dynamic_cast<Rectangle*>(shape)!=nullptr)
-        {
             out <<  static_cast<unsigned short int>(Type::RECTANGLE);
-            qDebug() << static_cast<unsigned short int>(Type::RECTANGLE);
-            shape->safe(out);
-        }
         else if(dynamic_cast<Triangle*>(shape)!=nullptr)
-        {
             out << static_cast<unsigned short int>(Type::TRIANGLE);
-            qDebug() << static_cast<unsigned short int>(Type::TRIANGLE);
-            shape->safe(out);
-        }
         else if(dynamic_cast<ConnectionLine*>(shape)!=nullptr)
-        {
             out << static_cast<unsigned short int>(Type::CONNECTION_LINE);
-            qDebug() << static_cast<unsigned short int>(Type::CONNECTION_LINE);
-            shape->safe(out);
-        }
 
-
+        shape->safe(out);
     }
 
     file.flush();
