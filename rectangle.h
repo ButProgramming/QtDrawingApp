@@ -7,6 +7,7 @@ class Rectangle : public AreaShape
 {
 public:
     Rectangle(const QRect& rect) : AreaShape(rect) {}
+    Rectangle(const QPoint& point) : AreaShape(QRect(point.x(), point.y(), NULL, NULL)) {}
     void draw(QPaintDevice *device) override;
 
     bool contains(const QPoint& point) override;

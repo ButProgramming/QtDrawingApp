@@ -54,12 +54,19 @@ private slots:
 
 private:
     void selectShape(QMouseEvent *event);
+
     void unselectShapes();
+
     void moveSelectedShape(const QPoint& lastPoint);
+
     void drawCenters(bool shouldDrawCenters);
+
     bool isConnectedWithShape(QPoint point, int& IDConnectedWith);
+
     void loadFile();
+
     void safeFile();
+
     enum class Tool
     {
         SAFE,

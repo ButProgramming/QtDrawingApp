@@ -8,6 +8,7 @@ class AreaShape : public Shape
 {
 public:
     AreaShape(const QRect& rect) : Shape(rect) { m_ID = ID++; }
+    AreaShape(const QPoint& point) : Shape(QRect(point.x(), point.y(), NULL, NULL)) { m_ID = ID++; }
 
     virtual ~AreaShape(){}
     virtual bool contains(const QPoint& point) = 0;

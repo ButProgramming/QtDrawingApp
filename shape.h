@@ -34,6 +34,7 @@ class Shape
 {
 public:
     Shape(const QRect& rect) : m_rect(rect) {}
+    Shape(const QPoint& point) : m_rect(QRect(point.x(), point.y(), NULL, NULL)) {}
     virtual ~Shape(){}
     virtual void draw(QPaintDevice* device) = 0;
     virtual void safe(QDataStream& out) = 0;
