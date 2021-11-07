@@ -25,6 +25,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     {
         x = event->x();
         y = event->y();
+
+        // avoid false shape printing, when a new shape is creating
         lastX = x;
         lastY = y;
     }
@@ -65,37 +67,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *event)
-{
-    if(tool == Tool::CONNTECTION_LINE)
-    {
-        if(!isConnectedWithShape(QPoint(event->x(), event->y()), secondID) || firstID == secondID)
-        {
-            if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr && // if the last pushed element is a connection line.
-                    shape!=nullptr) // we can't delete a connected line now because the line was not created (is equal to nullptr)
-            {
-                delete shapes.back();
-                shapes.pop_back();
-            }
-        }
-        else
-        {
-            dynamic_cast<ConnectionLine*>(shapes.back())->linkToShape(NULL, secondID);
-            dynamic_cast<ConnectionLine*>(shapes.back())->updateConnection(shapes);
-        }
-    }
-
-    firstID = 0;
-    secondID = 0;
-    leftMouseIsDown = false;
-    lastX = event->x();
-    lastY = event->y();
-    QPoint lastPoint(lastX, lastY);
-    moveSelectedShape(lastPoint);
-    update();
-
-}
-
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     if(!shapes.empty())
@@ -132,6 +103,42 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     update();
 }
 
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(!shapes.empty())
+    {
+        if(tool == Tool::CONNTECTION_LINE)
+        {
+            if(!isConnectedWithShape(QPoint(event->x(), event->y()), secondID) || firstID == secondID)
+            {
+                if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr && // if the last pushed element is a connection line.
+                        shape!=nullptr) // we can't delete a connected line now because the line was not created (is equal to nullptr)
+                {
+                    delete shapes.back();
+                    shapes.pop_back();
+                }
+            }
+            else
+            {
+                dynamic_cast<ConnectionLine*>(shapes.back())->linkToShape(NULL, secondID);
+                dynamic_cast<ConnectionLine*>(shapes.back())->updateConnection(shapes);
+            }
+        }
+    }
+
+
+    firstID = 0;
+    secondID = 0;
+    leftMouseIsDown = false;
+    lastX = event->x();
+    lastY = event->y();
+    QPoint lastPoint(lastX, lastY);
+    moveSelectedShape(lastPoint);
+    update();
+
+}
+
+
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     // draw shapes from vector
@@ -142,44 +149,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 }
 
-void MainWindow::on_actionEllipse_triggered()
-{
-    tool = Tool::ELLIPSE;
-    unselectShapes();
-    drawCenters(false);
-    update();
-}
 
-void MainWindow::on_actionTriangle_triggered()
-{
-    tool = Tool::TRIANGLE;
-    unselectShapes();
-    drawCenters(false);
-    update();
-}
-
-void MainWindow::on_actionRectangle_triggered()
-{
-    tool = Tool::RECTAGLE;
-    unselectShapes();
-    drawCenters(false);
-    update();
-}
-
-void MainWindow::on_actionConnect_triggered()
-{
-    tool = Tool::CONNTECTION_LINE;
-    unselectShapes();
-    drawCenters(true);
-    update();
-}
-
-void MainWindow::on_actionMove_triggered()
-{
-    tool = Tool::MOVE;
-    drawCenters(false);
-    update();
-}
 
 void MainWindow::unselectShapes()
 {
@@ -341,4 +311,43 @@ void MainWindow::on_actionSave_triggered()
 {
     tool = Tool::SAFE;
     safeFile();
+}
+
+void MainWindow::on_actionEllipse_triggered()
+{
+    tool = Tool::ELLIPSE;
+    unselectShapes();
+    drawCenters(false);
+    update();
+}
+
+void MainWindow::on_actionTriangle_triggered()
+{
+    tool = Tool::TRIANGLE;
+    unselectShapes();
+    drawCenters(false);
+    update();
+}
+
+void MainWindow::on_actionRectangle_triggered()
+{
+    tool = Tool::RECTAGLE;
+    unselectShapes();
+    drawCenters(false);
+    update();
+}
+
+void MainWindow::on_actionConnect_triggered()
+{
+    tool = Tool::CONNTECTION_LINE;
+    unselectShapes();
+    drawCenters(true);
+    update();
+}
+
+void MainWindow::on_actionMove_triggered()
+{
+    tool = Tool::MOVE;
+    drawCenters(false);
+    update();
 }
