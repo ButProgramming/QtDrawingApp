@@ -50,6 +50,8 @@ public:
     }
 
     int getID() {return m_ID;}
+
+    void updateCreate(int lastX, int lastY) override;
 protected:
     bool m_shouldDrawCenter = false;
     static int ID;

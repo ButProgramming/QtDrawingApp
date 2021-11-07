@@ -36,3 +36,8 @@ void AreaShape::load(QDataStream &in)
     in >> m_ID;
 
 }
+
+void AreaShape::updateCreate(int lastX, int lastY)
+{
+    m_rect.setBottomRight(QPoint(lastX, lastY));
+}

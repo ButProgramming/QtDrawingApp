@@ -50,7 +50,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     {
         if(isConnectedWithShape(QPoint(event->x(), event->y()), firstID))
         {
-            shape = new ConnectionLine(rect);
+            shape = new ConnectionLine(point);
             dynamic_cast<ConnectionLine*>(shape)->linkToShape(firstID, NULL);
         }
         break;
@@ -247,7 +247,7 @@ void MainWindow::loadFile()
             shape = new Triangle(point);
             break;
         case static_cast<unsigned short int>(Type::CONNECTION_LINE):
-            shape = new ConnectionLine(rect);
+            shape = new ConnectionLine(point);
             break;
         }
         shape->load(in);

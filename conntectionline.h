@@ -7,7 +7,8 @@
 class ConnectionLine : public Shape
 {
 public:
-    ConnectionLine(const QRect& rect) : Shape(rect){}
+    //ConnectionLine(const QRect& rect) : Shape(rect){}
+    ConnectionLine(const QPoint& point) {m_points.at(consts::firstPoint) = point;}
 
     void draw(QPaintDevice* device) override;
 
@@ -15,11 +16,12 @@ public:
     void updateConnection(const std::vector<Shape*>& shapes);
     void safe(QDataStream &out) override;
     void load(QDataStream& in) override;
+    void updateCreate(int lastX, int lastY) override;
 
-public:
+private:
     int m_firstIDShape{};
     int m_secondIDShape{};
-
+    std::array<QPoint, 2> m_points;
 };
 
 #endif // CONNTECTIONLINE_H
