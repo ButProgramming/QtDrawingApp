@@ -74,7 +74,7 @@
   <action name="actionSave">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/Save.ico</normaloff>:/images/Save.ico</iconset>
+     <normaloff>:/images/images/Save.ico</normaloff>:/images/images/Save.ico</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -83,7 +83,7 @@
   <action name="actionLoad">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/load.png</normaloff>:/images/load.png</iconset>
+     <normaloff>:/images/images/load.png</normaloff>:/images/images/load.png</iconset>
    </property>
    <property name="text">
     <string>Load</string>
@@ -92,7 +92,7 @@
   <action name="actionEllipse">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/ellipse.png</normaloff>:/images/ellipse.png</iconset>
+     <normaloff>:/images/images/ellipse.png</normaloff>:/images/images/ellipse.png</iconset>
    </property>
    <property name="text">
     <string>Ellipse</string>
@@ -101,7 +101,7 @@
   <action name="actionRectangle">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/rectangle.png</normaloff>:/images/rectangle.png</iconset>
+     <normaloff>:/images/images/rectangle.png</normaloff>:/images/images/rectangle.png</iconset>
    </property>
    <property name="text">
     <string>Rectangle</string>
@@ -110,7 +110,7 @@
   <action name="actionTriangle">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/triangle.png</normaloff>:/images/triangle.png</iconset>
+     <normaloff>:/images/images/triangle.png</normaloff>:/images/images/triangle.png</iconset>
    </property>
    <property name="text">
     <string>Triangle</string>
@@ -119,7 +119,7 @@
   <action name="actionMove">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/hand.png</normaloff>:/images/hand.png</iconset>
+     <normaloff>:/images/images/hand.png</normaloff>:/images/images/hand.png</iconset>
    </property>
    <property name="text">
     <string>Move</string>
@@ -128,7 +128,7 @@
   <action name="actionConnect">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/connection-line.png</normaloff>:/images/connection-line.png</iconset>
+     <normaloff>:/images/images/connection-line.png</normaloff>:/images/images/connection-line.png</iconset>
    </property>
    <property name="text">
     <string>Connect</string>

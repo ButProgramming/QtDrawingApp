@@ -1,11 +1,11 @@
 <RCC>
     <qresource prefix="/images">
-        <file>Save.ico</file>
-        <file>ellipse.png</file>
-        <file>rectangle.png</file>
-        <file>triangle.png</file>
-        <file>connection-line.png</file>
-        <file>load.png</file>
-        <file>hand.png</file>
+        <file>images/connection-line.png</file>
+        <file>images/ellipse.png</file>
+        <file>images/hand.png</file>
+        <file>images/load.png</file>
+        <file>images/rectangle.png</file>
+        <file>images/Save.ico</file>
+        <file>images/triangle.png</file>
     </qresource>
 </RCC>

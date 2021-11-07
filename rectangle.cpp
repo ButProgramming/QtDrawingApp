@@ -7,6 +7,7 @@ void Rectangle::draw(QPaintDevice *device)
     if(m_selected)
     {
         drawSelection(painter);
+        delete painter;
         return;
     }
 
