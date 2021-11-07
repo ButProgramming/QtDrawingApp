@@ -7,6 +7,8 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QMessageBox>
 
 // classes
 #include "rectangle.h"
@@ -46,12 +48,18 @@ private slots:
 
     void on_actionMove_triggered();
 
+    void on_actionLoad_triggered();
+
+    void on_actionSave_triggered();
+
 private:
     void selectShape(QMouseEvent *event);
     void unselectShapes();
     void moveSelectedShape(const QPoint& lastPoint);
     void drawCenters(bool shouldDrawCenters);
     bool isConnectedWithShape(QPoint point, int& IDConnectedWith);
+    void loadFile();
+    void safeFile();
     enum class Tool
     {
         SAFE,
@@ -76,6 +84,8 @@ private:
     Tool tool = Tool::MOVE;
     QPainter painter;
     vector<Shape*> shapes;
+    const QString filter = "QtDrawingApp files (*.qda*)";
+
 
 };
 

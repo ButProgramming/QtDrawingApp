@@ -27,7 +27,7 @@ void ConnectionLine::linkToShape(int firstID, int secondID)
     }
 }
 
-void ConnectionLine::updateConnection(const vector<Shape *> &shapes)
+void ConnectionLine::updateConnection(const std::vector<Shape *> &shapes)
 {
 
     if(!m_firstIDShape || !m_secondIDShape)

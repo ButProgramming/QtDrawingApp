@@ -227,6 +227,21 @@ bool MainWindow::isConnectedWithShape(QPoint point, int& IDConntectedWith)
     return false;
 }
 
+void MainWindow::loadFile()
+{
+    QString file = QFileDialog::getOpenFileName(this, "Open a file", "", filter);
+
+    //QMessageBox::information(this, "...", file);
+}
+
+void MainWindow::safeFile()
+{
+    QString file = QFileDialog::getSaveFileName(this, "Save your file", "", filter);
+    file.append(".qda");
+
+    //QMessageBox::information(this, "...", file);
+}
+
 void MainWindow::selectShape(QMouseEvent *event)
 {
     for(int i = shapes.size() - 1; i>=0; i--)
@@ -236,4 +251,16 @@ void MainWindow::selectShape(QMouseEvent *event)
                 dynamic_cast<AreaShape*>(shapes[i])->setSelected(true);
                 return;
             }
+}
+
+void MainWindow::on_actionLoad_triggered()
+{
+    tool = Tool::LOAD;
+    loadFile();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    tool = Tool::SAFE;
+    safeFile();
 }

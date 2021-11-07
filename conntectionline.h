@@ -12,7 +12,7 @@ public:
     void draw(QPaintDevice* device) override;
 
     void linkToShape(int firstIDLink, int secondIDLink);
-    void updateConnection(const vector<Shape*>& shapes);
+    void updateConnection(const std::vector<Shape*>& shapes);
 
 public:
     int m_firstIDShape{};

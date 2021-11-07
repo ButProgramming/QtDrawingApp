@@ -13,7 +13,6 @@
 #include <QGraphicsEllipseItem>
 
 #include <vector>
-using namespace std;
 
 namespace consts
 {
