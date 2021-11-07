@@ -12,8 +12,8 @@ public:
     virtual ~AreaShape(){}
     virtual bool contains(const QPoint& point) = 0;
     virtual void drawSelection(QPainter& painter);
-    void safe(QDataStream &out, unsigned short int type) override;
-    unsigned short int load(QDataStream &in) override;
+    void safe(QDataStream &out) override;
+    void load(QDataStream &in) override;
 
     void setSelected(bool selected) { m_selected = selected;}
     bool isSelected() {return m_selected;}
@@ -41,7 +41,6 @@ public:
                    );
         QGraphicsEllipseItem centerEllipse(rect);
 
-        //QGraphicsEllipseItem centerEllipse(0, 0, 1000, 1000);
         if(centerEllipse.contains(point))
             return true;
 
@@ -54,8 +53,7 @@ protected:
     bool m_shouldDrawCenter = false;
     static int ID;
     int m_ID{};
-
-    //void setNotSelected() { isSelected = false;}
+    bool m_selected = false;
 
 };
 

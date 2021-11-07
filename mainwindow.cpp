@@ -50,7 +50,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
             shape = new ConnectionLine(rect);
             dynamic_cast<ConnectionLine*>(shape)->linkToShape(firstID, NULL);
         }
-            break;
+        break;
     }
     case Tool::MOVE:
         selectShape(event);
@@ -72,7 +72,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
         if(!isConnectedWithShape(QPoint(event->x(), event->y()), secondID) || firstID == secondID)
         {
             if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr && // if the last pushed element is a connection line.
-               shape!=nullptr) // we can't delete a connected line now because the line was not created (is equal to nullptr)
+                    shape!=nullptr) // we can't delete a connected line now because the line was not created (is equal to nullptr)
             {
                 delete shapes.back();
                 shapes.pop_back();
@@ -105,7 +105,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
         else if(tool == Tool::CONNTECTION_LINE && leftMouseIsDown)
             if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
-                  shapes.back()->updateCreate(lastX, lastY);          // it will work only if a connection line was created,
+                shapes.back()->updateCreate(lastX, lastY);            // it will work only if a connection line was created,
                                                                       // in other words isConnectedWithShape -> true (in mousePressEvent)
 
     }
@@ -138,12 +138,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     for(auto shape:shapes)
     {
         shape->draw(this);
-        if(dynamic_cast<ConnectionLine*>(shape)!=nullptr)
-           qDebug() << dynamic_cast<ConnectionLine*>(shape)->m_firstIDShape << " " << dynamic_cast<ConnectionLine*>(shape)->m_secondIDShape;
     }
-
-
-    //painter.drawEllipse(rect);
 
 }
 
@@ -234,29 +229,48 @@ void MainWindow::loadFile()
     int size{};
 
     if(!file.open((QIODevice::ReadOnly)))
-    {
-        qDebug() << "lol";
         return;
-    }
 
     QDataStream in(&file);
     in.setVersion(QDataStream::Qt_5_12);
+
     in>>size;
 
-    shapes.clear();
 
+    shapes.clear();
+    Shape* shape = nullptr;
     for(int i = 0; i < size; i++)
     {
-        Shape* ellipse = new Ellipse(QRect(0,0,0,0));
-        ellipse->load(in);
-        shapes.push_back(ellipse);
-    }
+        shape = nullptr;
+        QRect rect(0, 0, 0, 0);
+        unsigned short int type{};
+        in >> type;
 
+        qDebug() << "type" << type;
+        switch(type)
+        {
+        case static_cast<unsigned short int>(Type::ELLIPSE):
+            qDebug() << "case" << static_cast<unsigned short int>(Type::ELLIPSE);
+            shape = new Ellipse(rect);
+            break;
+        case static_cast<unsigned short int>(Type::RECTANGLE):
+            qDebug() << "case" << static_cast<unsigned short int>(Type::RECTANGLE);
+            shape = new Rectangle(rect);
+            break;
+        case static_cast<unsigned short int>(Type::TRIANGLE):
+            qDebug() << "case" << static_cast<unsigned short int>(Type::TRIANGLE);
+            shape = new Triangle(rect);
+            break;
+        case 3:
+            shape = new ConnectionLine(rect);
+        }
+        shape->load(in);
+        shapes.push_back(shape);
+    }
 
     file.close();
     update();
 
-    //QMessageBox::information(this, "...", file);
 }
 
 void MainWindow::safeFile()
@@ -269,22 +283,41 @@ void MainWindow::safeFile()
         return;
 
     QDataStream out(&file);
+    out.setVersion(QDataStream::Qt_5_12);
     out << (int)shapes.size();
 
     for(auto shape:shapes)
     {
-        shape->safe(out, 0);
-    }
+        if(dynamic_cast<Ellipse*>(shape)!=nullptr)
+        {
+            out << static_cast<unsigned short int>(Type::ELLIPSE);
+            qDebug() << static_cast<unsigned short int>(Type::ELLIPSE);
+            shape->safe(out);
+        }
+        else if(dynamic_cast<Rectangle*>(shape)!=nullptr)
+        {
+            out <<  static_cast<unsigned short int>(Type::RECTANGLE);
+            qDebug() << static_cast<unsigned short int>(Type::RECTANGLE);
+            shape->safe(out);
+        }
+        else if(dynamic_cast<Triangle*>(shape)!=nullptr)
+        {
+            out << static_cast<unsigned short int>(Type::TRIANGLE);
+            qDebug() << static_cast<unsigned short int>(Type::TRIANGLE);
+            shape->safe(out);
+        }
+        else if(dynamic_cast<ConnectionLine*>(shape)!=nullptr)
+        {
+            out << static_cast<unsigned short int>(Type::CONNECTION_LINE);
+            qDebug() << static_cast<unsigned short int>(Type::CONNECTION_LINE);
+            shape->safe(out);
+        }
 
-    out.setVersion(QDataStream::Qt_5_12);
+
+    }
 
     file.flush();
     file.close();
-
-    //QMessageBox::information(this, "...", filePath);
-
-
-
 }
 
 void MainWindow::selectShape(QMouseEvent *event)

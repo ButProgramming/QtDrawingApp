@@ -52,12 +52,16 @@ void ConnectionLine::updateConnection(const std::vector<Shape *> &shapes)
     }
 }
 
-void ConnectionLine::safe(QDataStream &out, unsigned short int type)
+void ConnectionLine::safe(QDataStream &out)
 {
-
+    out<<m_rect;
+    out << m_firstIDShape;
+    out << m_secondIDShape;
 }
 
-unsigned short int ConnectionLine::load(QDataStream &in)
+void ConnectionLine::load(QDataStream &in)
 {
-
+    in >> m_rect;
+    in >> m_firstIDShape;
+    in >> m_secondIDShape;
 }

@@ -13,8 +13,8 @@ public:
 
     void linkToShape(int firstIDLink, int secondIDLink);
     void updateConnection(const std::vector<Shape*>& shapes);
-    void safe(QDataStream &out, unsigned short int type) override;
-    unsigned short int load(QDataStream& in) override;
+    void safe(QDataStream &out) override;
+    void load(QDataStream& in) override;
 
 public:
     int m_firstIDShape{};
