@@ -33,8 +33,11 @@ public:
     ~MainWindow();
 
     virtual void mousePressEvent(QMouseEvent *event);
+
     virtual void paintEvent(QPaintEvent *event);
+
     virtual void mouseReleaseEvent(QMouseEvent *event);
+
     virtual void mouseMoveEvent(QMouseEvent *event);
 
 private slots:
@@ -67,10 +70,10 @@ private:
 
     void safeFile();
 
+    void checkLineConnection();
+
     enum class Tool
     {
-        SAFE,
-        LOAD,
         ELLIPSE,
         RECTAGLE,
         TRIANGLE,
@@ -80,22 +83,20 @@ private:
 
 private:
     Ui::MainWindow *ui;
-    Shape* shape = nullptr;
-    QPoint point;
-    QPoint lastPoint;
-    //int x{};
-    //int y{};
-    //int lastX{};
-    //int lastY{};
-    bool leftMouseIsDown = false;
-    int firstID{};
-    int secondID{};
-    Tool tool = Tool::MOVE;
-    QPainter painter;
-    vector<Shape*> shapes;
+
     const QString filter = "QtDrawingApp files (*.qda*)";
 
+    bool leftMouseIsDown = false;
 
+    Shape* shape = nullptr;
+    vector<Shape*> shapes;
+
+    QPoint point;
+    QPoint lastPoint;
+
+    std::pair<int, int> IDs;
+
+    Tool tool = Tool::MOVE;
 };
 
 #endif // MAINWINDOW_H
