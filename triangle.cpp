@@ -36,3 +36,4 @@ bool Triangle::contains(const QPoint &point)
 
     return false;
 }
+

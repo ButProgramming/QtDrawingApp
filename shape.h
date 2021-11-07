@@ -11,8 +11,19 @@
 #include <QPoint>
 #include <QDebug>
 #include <QGraphicsEllipseItem>
+#include <QDataStream>
+#include <QtCore>
+#include <QFile>
 
 #include <vector>
+
+enum class Type
+{
+    ELLIPSE,
+    RECTANGLE,
+    TRIANGLE,
+    CONNECTION_LINE
+};
 
 namespace consts
 {
@@ -25,16 +36,15 @@ public:
     Shape(const QRect& rect) : m_rect(rect) {}
     virtual ~Shape(){}
     virtual void draw(QPaintDevice* device) = 0;
+    virtual void safe(QDataStream& out, unsigned short int type) = 0;
+    virtual unsigned short int load(QDataStream& in) = 0;
 
     void updateCreate(int lastX, int lastY)
     {
         m_rect.setBottomRight(QPoint(lastX, lastY));
     };
 
-    QPoint getCenter()
-    {
-        return m_rect.center();
-    }
+
 
 
 protected:

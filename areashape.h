@@ -12,6 +12,8 @@ public:
     virtual ~AreaShape(){}
     virtual bool contains(const QPoint& point) = 0;
     virtual void drawSelection(QPainter& painter);
+    void safe(QDataStream &out, unsigned short int type) override;
+    unsigned short int load(QDataStream &in) override;
 
     void setSelected(bool selected) { m_selected = selected;}
     bool isSelected() {return m_selected;}
@@ -19,6 +21,10 @@ public:
     {
         m_rect.setBottomLeft(QPoint(m_rect.bottomLeft().x() - dx, m_rect.bottomLeft().y() - dy));
         m_rect.setTopRight(QPoint(m_rect.topRight().x() - dx, m_rect.topRight().y() - dy));
+    }
+    QPoint getCenter()
+    {
+        return m_rect.center();
     }
     void drawCenter(bool shouldDrawCenter)
     {
@@ -47,8 +53,8 @@ public:
 protected:
     bool m_shouldDrawCenter = false;
     static int ID;
-public:
     int m_ID{};
+
     //void setNotSelected() { isSelected = false;}
 
 };

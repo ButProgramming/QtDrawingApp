@@ -23,3 +23,4 @@ bool Ellipse::contains(const QPoint &point)
 
     return false;
 }
+

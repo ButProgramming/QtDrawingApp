@@ -30,8 +30,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 
 
-
-    QRect rect(x, y, 0, 0);
+    QRect rect(x, y, NULL, NULL);
     shape = nullptr; // null it every time
     switch(tool)
     {
@@ -229,17 +228,63 @@ bool MainWindow::isConnectedWithShape(QPoint point, int& IDConntectedWith)
 
 void MainWindow::loadFile()
 {
-    QString file = QFileDialog::getOpenFileName(this, "Open a file", "", filter);
+    QString filePath = QFileDialog::getOpenFileName(this, "Open a file", "", filter);
+
+    QFile file(filePath);
+    int size{};
+
+    if(!file.open((QIODevice::ReadOnly)))
+    {
+        qDebug() << "lol";
+        return;
+    }
+
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_5_12);
+    in>>size;
+
+    shapes.clear();
+
+    for(int i = 0; i < size; i++)
+    {
+        Shape* ellipse = new Ellipse(QRect(0,0,0,0));
+        ellipse->load(in);
+        shapes.push_back(ellipse);
+    }
+
+
+    file.close();
+    update();
 
     //QMessageBox::information(this, "...", file);
 }
 
 void MainWindow::safeFile()
 {
-    QString file = QFileDialog::getSaveFileName(this, "Save your file", "", filter);
-    file.append(".qda");
+    QString filePath = QFileDialog::getSaveFileName(this, "Save your file", "", filter);
+    filePath.append(".qda");
 
-    //QMessageBox::information(this, "...", file);
+    QFile file(filePath);
+    if(!file.open((QIODevice::WriteOnly)))
+        return;
+
+    QDataStream out(&file);
+    out << (int)shapes.size();
+
+    for(auto shape:shapes)
+    {
+        shape->safe(out, 0);
+    }
+
+    out.setVersion(QDataStream::Qt_5_12);
+
+    file.flush();
+    file.close();
+
+    //QMessageBox::information(this, "...", filePath);
+
+
+
 }
 
 void MainWindow::selectShape(QMouseEvent *event)

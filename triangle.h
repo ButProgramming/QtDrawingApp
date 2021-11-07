@@ -13,6 +13,7 @@ public:
     bool contains(const QPoint& point) override;
 
 
+
 };
 
 #endif // TRIANGLE_H

@@ -30,3 +30,4 @@ void Rectangle::drawSelection(QPainter &painter)
     painter.setBrush(Qt::white);
     painter.drawRect(m_rect);
 }
+

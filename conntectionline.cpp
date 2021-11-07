@@ -42,12 +42,22 @@ void ConnectionLine::updateConnection(const std::vector<Shape *> &shapes)
             if(dynamic_cast<AreaShape*>(shape)->getID() == m_firstIDShape)
             {
 
-                m_rect.setBottomRight(shape->getCenter());
+                m_rect.setBottomRight(dynamic_cast<AreaShape*>(shape)->getCenter());
             }
             if(dynamic_cast<AreaShape*>(shape)->getID() == m_secondIDShape)
             {
-                m_rect.setTopLeft(shape->getCenter());
+                m_rect.setTopLeft(dynamic_cast<AreaShape*>(shape)->getCenter());
             }
         }
     }
+}
+
+void ConnectionLine::safe(QDataStream &out, unsigned short int type)
+{
+
+}
+
+unsigned short int ConnectionLine::load(QDataStream &in)
+{
+
 }
