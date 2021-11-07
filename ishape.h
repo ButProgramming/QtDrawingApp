@@ -18,6 +18,7 @@
 #include <vector>
 //#include <array>
 #include <utility>
+#include <memory>
 
 enum class Type
 {
@@ -30,8 +31,9 @@ enum class Type
 namespace consts
 {
     const int sizeOfCenterEllipse = 5;
-    //const int firstPoint = 0; // for std::array
-    //const int secondPoint = 1;
+    const int sizeOfPenForTriangle = 2;
+    const int standartSizeOfPen = 1;
+    const int sizeOfPenForLine = 2;
 }
 
 class Shape

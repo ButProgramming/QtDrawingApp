@@ -11,7 +11,7 @@ public:
     void draw(QPaintDevice *device) override;
 
     bool contains(const QPoint& point) override;
-    void drawSelection(QPainter &painter) override;
+    void drawSelection(QPainter* painter) override;
 
 };
 

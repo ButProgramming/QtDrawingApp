@@ -19,19 +19,19 @@ SOURCES += \
     areashape.cpp \
     conntectionline.cpp \
     ellipse.cpp \
+    ishape.cpp \
     main.cpp \
     mainwindow.cpp \
     rectangle.cpp \
-    shape.cpp \
     triangle.cpp
 
 HEADERS += \
     areashape.h \
     conntectionline.h \
     ellipse.h \
+    ishape.h \
     mainwindow.h \
     rectangle.h \
-    shape.h \
     triangle.h
 
 FORMS += \

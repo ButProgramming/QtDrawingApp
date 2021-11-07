@@ -2,7 +2,7 @@
 
 void Rectangle::draw(QPaintDevice *device)
 {
-    QPainter painter(device);
+    QPainter* painter = new QPainter(device);
 
     if(m_selected)
     {
@@ -10,10 +10,12 @@ void Rectangle::draw(QPaintDevice *device)
         return;
     }
 
-    painter.setBrush(Qt::white);
-    painter.drawRect(m_rect);
+    painter->setBrush(Qt::white);
+    painter->drawRect(m_rect);
     if(m_shouldDrawCenter)
-        painter.drawEllipse(m_rect.center(), consts::sizeOfCenterEllipse, consts::sizeOfCenterEllipse);
+        drawEllipseCenter(painter);
+
+    delete painter;
 }
 
 bool Rectangle::contains(const QPoint &point)
@@ -24,10 +26,10 @@ bool Rectangle::contains(const QPoint &point)
     return false;
 }
 
-void Rectangle::drawSelection(QPainter &painter)
+void Rectangle::drawSelection(QPainter* painter)
 {
-    painter.setPen(Qt::DotLine);
-    painter.setBrush(Qt::white);
-    painter.drawRect(m_rect);
+    painter->setPen(Qt::DotLine);
+    painter->setBrush(Qt::white);
+    painter->drawRect(m_rect);
 }
 
