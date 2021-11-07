@@ -16,7 +16,8 @@
 #include <QFile>
 
 #include <vector>
-#include <array>
+//#include <array>
+#include <utility>
 
 enum class Type
 {
@@ -29,8 +30,8 @@ enum class Type
 namespace consts
 {
     const int sizeOfCenterEllipse = 5;
-    const int firstPoint = 0; // for std::array
-    const int secondPoint = 1;
+    //const int firstPoint = 0; // for std::array
+    //const int secondPoint = 1;
 }
 
 class Shape

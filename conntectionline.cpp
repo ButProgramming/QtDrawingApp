@@ -8,8 +8,8 @@ void ConnectionLine::draw(QPaintDevice *device)
 
     //path.moveTo(m_rect.left(), m_rect.top());
     //path.lineTo(m_rect.bottomRight());
-    path.moveTo(m_points.at(consts::firstPoint));
-    path.lineTo(m_points.at(consts::secondPoint));
+    path.moveTo(m_points.first);
+    path.lineTo(m_points.second);
 
     QPen pen(Qt::black);
     pen.setWidth(2);
@@ -44,11 +44,11 @@ void ConnectionLine::updateConnection(const std::vector<Shape *> &shapes)
             if(dynamic_cast<AreaShape*>(shape)->getID() == m_firstIDShape)
             {
 
-                m_points.at(consts::firstPoint) = dynamic_cast<AreaShape*>(shape)->getCenter();
+                m_points.first = dynamic_cast<AreaShape*>(shape)->getCenter();
             }
             if(dynamic_cast<AreaShape*>(shape)->getID() == m_secondIDShape)
             {
-                m_points.at(consts::secondPoint) = dynamic_cast<AreaShape*>(shape)->getCenter();
+                m_points.second = dynamic_cast<AreaShape*>(shape)->getCenter();
             }
         }
     }
@@ -56,14 +56,17 @@ void ConnectionLine::updateConnection(const std::vector<Shape *> &shapes)
 
 void ConnectionLine::safe(QDataStream &out)
 {
-    out<<m_rect;
+    //out<<m_rect;
+    out << m_points.first;
+    out << m_points.second;
     out << m_firstIDShape;
     out << m_secondIDShape;
 }
 
 void ConnectionLine::load(QDataStream &in)
 {
-    in >> m_rect;
+    in >> m_points.first;
+    in >> m_points.second;
     in >> m_firstIDShape;
     in >> m_secondIDShape;
 }
@@ -71,7 +74,7 @@ void ConnectionLine::load(QDataStream &in)
 void ConnectionLine::updateCreate(int lastX, int lastY)
 {
 
-    m_points.at(consts::secondPoint) = QPoint(lastX, lastY);
+    m_points.second = QPoint(lastX, lastY);
     //m_rect.setBottomRight(QPoint(lastX, lastY));
 
 }

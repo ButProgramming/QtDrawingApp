@@ -8,7 +8,7 @@ class ConnectionLine : public Shape
 {
 public:
     //ConnectionLine(const QRect& rect) : Shape(rect){}
-    ConnectionLine(const QPoint& point) {m_points.at(consts::firstPoint) = point;}
+    ConnectionLine(const QPoint& point) {m_points.first = point;}
 
     void draw(QPaintDevice* device) override;
 
@@ -21,7 +21,8 @@ public:
 private:
     int m_firstIDShape{};
     int m_secondIDShape{};
-    std::array<QPoint, 2> m_points;
+    //std::array<QPoint, 2> m_points;
+    std::pair<QPoint, QPoint> m_points;
 };
 
 #endif // CONNTECTIONLINE_H
