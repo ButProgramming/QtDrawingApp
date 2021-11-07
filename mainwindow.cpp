@@ -33,17 +33,18 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 
     QRect rect(x, y, NULL, NULL);
+    QPoint point(x, y);
     shape = nullptr; // null it every time
     switch(tool)
     {
     case Tool::RECTAGLE:
-        shape = new Rectangle(QPoint(x, y));
+        shape = new Rectangle(point);
         break;
     case Tool::ELLIPSE:
-        shape = new Ellipse(rect);
+        shape = new Ellipse(point);
         break;
     case Tool::TRIANGLE:
-        shape = new Triangle(rect);
+        shape = new Triangle(point);
         break;
     case Tool::CONNTECTION_LINE:
     {
@@ -227,6 +228,7 @@ void MainWindow::loadFile()
     {
         shape = nullptr;
         QRect rect(0, 0, 0, 0);
+        QPoint point(0, 0);
         unsigned short int type{};
         in >> type;
 
@@ -234,15 +236,15 @@ void MainWindow::loadFile()
         {
         case static_cast<unsigned short int>(Type::ELLIPSE):
             qDebug() << "case" << static_cast<unsigned short int>(Type::ELLIPSE);
-            shape = new Ellipse(rect);
+            shape = new Ellipse(point);
             break;
         case static_cast<unsigned short int>(Type::RECTANGLE):
             qDebug() << "case" << static_cast<unsigned short int>(Type::RECTANGLE);
-            shape = new Rectangle(rect);
+            shape = new Rectangle(point);
             break;
         case static_cast<unsigned short int>(Type::TRIANGLE):
             qDebug() << "case" << static_cast<unsigned short int>(Type::TRIANGLE);
-            shape = new Triangle(rect);
+            shape = new Triangle(point);
             break;
         case static_cast<unsigned short int>(Type::CONNECTION_LINE):
             shape = new ConnectionLine(rect);
