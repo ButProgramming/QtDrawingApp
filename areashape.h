@@ -4,10 +4,10 @@
 #include "ishape.h"
 
 
-class AreaShape : public Shape
+class AreaShape : public IShape
 {
 public:
-    AreaShape(const QPoint& point) : Shape(point) { m_ID = ID++; }
+    AreaShape(const QPoint& point) : IShape(point) { m_ID = ID++; }
 
     virtual ~AreaShape(){}
     virtual bool contains(const QPoint& point) = 0;

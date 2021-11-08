@@ -20,13 +20,13 @@ void ConnectionLine::draw(QPaintDevice *device)
 
 void ConnectionLine::linkToShape(int firstID, int secondID)
 {
-    if(firstID!=NULL)
+    if(firstID!=NULL)       // that means we connect the first point of the line to a shape
         m_firstIDShape = firstID;
-    else if(secondID!=NULL)
+    else if(secondID!=NULL) // that means we connect the second point of the line to a shape
         m_secondIDShape = secondID;
 }
 
-void ConnectionLine::updateConnection(const std::vector<Shape *> &shapes)
+void ConnectionLine::updateConnection(const std::vector<IShape *> &shapes)
 {
 
     if(!m_firstIDShape || !m_secondIDShape)

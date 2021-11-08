@@ -88,8 +88,8 @@ private:
 
     bool leftMouseIsDown = false;
 
-    Shape* shape = nullptr;
-    vector<Shape*> shapes;
+    IShape* shape = nullptr;
+    vector<IShape*> shapes;
 
     QPoint point;
     QPoint lastPoint;

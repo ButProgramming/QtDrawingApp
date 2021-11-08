@@ -36,13 +36,13 @@ namespace consts
     const int sizeOfPenForLine = 2;
 }
 
-class Shape
+class IShape
 {
 public:
-    Shape() {}
+    IShape() {}
     //Shape(const QRect& rect) : m_rect(rect) {}
-    Shape(const QPoint& point) : m_rect(QRect(point.x(), point.y(), NULL, NULL)) {}
-    virtual ~Shape(){}
+    IShape(const QPoint& point) : m_rect(QRect(point.x(), point.y(), NULL, NULL)) {}
+    virtual ~IShape(){}
     virtual void draw(QPaintDevice* device) = 0;
     virtual void safe(QDataStream& out) = 0;
     virtual void load(QDataStream& in) = 0;

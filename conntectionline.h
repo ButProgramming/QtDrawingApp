@@ -4,7 +4,7 @@
 #include "ishape.h"
 #include "areashape.h"
 
-class ConnectionLine : public Shape
+class ConnectionLine : public IShape
 {
 public:
     //ConnectionLine(const QRect& rect) : Shape(rect){}
@@ -13,7 +13,7 @@ public:
     void draw(QPaintDevice* device) override;
 
     void linkToShape(int firstIDLink, int secondIDLink);
-    void updateConnection(const std::vector<Shape*>& shapes);
+    void updateConnection(const std::vector<IShape*>& shapes);
     void safe(QDataStream &out) override;
     void load(QDataStream& in) override;
     void updateCreate(const QPoint& lastPoint) override;

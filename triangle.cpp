@@ -33,12 +33,12 @@ void Triangle::draw(QPaintDevice *device)
 
 bool Triangle::contains(const QPoint &point)
 {
-    QPainterPath path;
-    path.moveTo(m_rect.left() + (m_rect.width() / 2), m_rect.top());
-    path.lineTo(m_rect.bottomLeft());
-    path.lineTo(m_rect.bottomRight());
-    path.lineTo(m_rect.left() + (m_rect.width() / 2), m_rect.top());
-    if(path.contains(point))
+    std::unique_ptr<QPainterPath> path(new QPainterPath());
+    path->moveTo(m_rect.left() + (m_rect.width() / 2), m_rect.top());
+    path->lineTo(m_rect.bottomLeft());
+    path->lineTo(m_rect.bottomRight());
+    path->lineTo(m_rect.left() + (m_rect.width() / 2), m_rect.top());
+    if(path->contains(point))
         return true;
 
     return false;

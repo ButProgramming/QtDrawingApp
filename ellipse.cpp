@@ -16,8 +16,8 @@ void Ellipse::draw(QPaintDevice *device)
 
 bool Ellipse::contains(const QPoint &point)
 {
-    QGraphicsEllipseItem ellipse(m_rect);
-    if(ellipse.contains(point))
+    std::unique_ptr<QGraphicsEllipseItem> ellipse(new QGraphicsEllipseItem(m_rect));
+    if(ellipse->contains(point))
         return true;
 
     return false;

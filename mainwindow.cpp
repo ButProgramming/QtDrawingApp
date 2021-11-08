@@ -171,7 +171,7 @@ bool MainWindow::isConnectedWithShape(QPoint point, int& IDConntectedWith)
 void MainWindow::loadFile()
 {
     shapes.clear();
-    Shape* shape = nullptr;
+    IShape* shape = nullptr;
     int size{};
     QString filePath = QFileDialog::getOpenFileName(this, "Open a file", "", filter);
 
