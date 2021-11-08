@@ -181,7 +181,11 @@ void MainWindow::loadFile()
 	if (!file.open((QIODevice::ReadOnly)))
 		return;
 
-	shapes.clear(); //if the file has been opened
+    // clear memory
+    for(auto shape : shapes)
+        delete shape;
+    shapes.clear(); //if the file has been opened
+
 	QDataStream in(&file);
 	in.setVersion(QDataStream::Qt_5_12);
 
