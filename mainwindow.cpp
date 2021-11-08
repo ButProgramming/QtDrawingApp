@@ -64,6 +64,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
+
     if(!shapes.empty() && leftMouseIsDown)
     {
         if(tool==Tool::RECTAGLE || tool==Tool::ELLIPSE || tool == Tool::TRIANGLE)
@@ -71,17 +72,16 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
         else if(tool == Tool::CONNTECTION_LINE)
             if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
-                shapes.back()->updateCreate(lastPoint);            // it will work only if a connection line was created,
+                shapes.back()->updateCreate(lastPoint);               // it will work only if a connection line was created,
                                                                       // in other words isConnectedWithShape -> true (in mousePressEvent)
-
     }
 
-    if(tool==Tool::MOVE && leftMouseIsDown)
-        point = lastPoint;
-
+    // move the shape
     lastPoint.setX(event->x());
     lastPoint.setY(event->y());
     moveSelectedShape(lastPoint);
+    if(tool==Tool::MOVE && leftMouseIsDown)
+        point = lastPoint;
 
 
     if(leftMouseIsDown)
@@ -92,8 +92,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
                 dynamic_cast<ConnectionLine*>(shape)->updateConnection(shapes);
         }
     }
-
     update();
+
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
