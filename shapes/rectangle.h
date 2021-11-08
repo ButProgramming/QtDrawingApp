@@ -6,11 +6,11 @@
 class Rectangle : public AreaShape
 {
 public:
-    Rectangle(const QPoint& point) : AreaShape(point) {}
+	Rectangle(const QPoint& point) : AreaShape(point) {}
 
-    void draw(QPaintDevice *device) override;
-    bool contains(const QPoint& point) override;
-    void drawSelection(QPainter* painter) override;
+	void draw(QPaintDevice* device) override;
+	bool contains(const QPoint& point) override;
+	void drawSelection(QPainter* painter) override;
 };
 
 #endif // RECTANGLE_H

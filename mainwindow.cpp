@@ -1,397 +1,397 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget* parent)
+	: QMainWindow(parent)
+	, ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+	delete ui;
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event)
+void MainWindow::mousePressEvent(QMouseEvent* event)
 {
-    leftMouseIsDown = true;
+	leftMouseIsDown = true;
 
-    unselectShapes();
+	unselectShapes();
 
-    if(event->button() == Qt::LeftButton)
-    {
-        point.setX(event->x());
-        point.setY(event->y());
+	if (event->button() == Qt::LeftButton)
+	{
+		point.setX(event->x());
+		point.setY(event->y());
 
-        // avoid false shape printing, when a new shape is creating
-        lastPoint = point;
-    }
+		// avoid false shape printing, when a new shape is creating
+		lastPoint = point;
+	}
 
 
-    // create a shape
-    shape = nullptr; // null it every time
-    switch(tool)
-    {
-    case Tool::RECTAGLE:
-        shape = new Rectangle(point);
-        break;
-    case Tool::ELLIPSE:
-        shape = new Ellipse(point);
-        break;
-    case Tool::TRIANGLE:
-        shape = new Triangle(point);
-        break;
-    case Tool::CONNTECTION_LINE:
-        if(isConnectedWithShape(QPoint(event->x(), event->y()), IDs.first))
-        {
-            shape = new ConnectionLine(point);
-            dynamic_cast<ConnectionLine*>(shape)->linkToShape(IDs.first, NULL);
-        }
-        else
-            QMessageBox::information(this, "Wrong connection", "The line is not connected to a shape center");
+	// create a shape
+	shape = nullptr; // null it every time
+	switch (tool)
+	{
+	case Tool::RECTAGLE:
+		shape = new Rectangle(point);
+		break;
+	case Tool::ELLIPSE:
+		shape = new Ellipse(point);
+		break;
+	case Tool::TRIANGLE:
+		shape = new Triangle(point);
+		break;
+	case Tool::CONNTECTION_LINE:
+		if (isConnectedWithShape(QPoint(event->x(), event->y()), IDs.first))
+		{
+			shape = new ConnectionLine(point);
+			dynamic_cast<ConnectionLine*>(shape)->linkToShape(IDs.first, NULL);
+		}
+		else
+			QMessageBox::information(this, "Wrong connection", "The line is not connected to a shape center");
 
-        break;
-    case Tool::MOVE:
-        selectShape(event);
-        break;
-    default:
-        break;
-    }
+		break;
+	case Tool::MOVE:
+		selectShape(event);
+		break;
+	default:
+		break;
+	}
 
-    // if the tool was not MOVE
-    if(shape!=nullptr)
-        shapes.push_back(shape);
+	// if the tool was not MOVE
+	if (shape != nullptr)
+		shapes.push_back(shape);
 
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event)
+void MainWindow::mouseMoveEvent(QMouseEvent* event)
 {
-    if(!shapes.empty() && leftMouseIsDown)
-    {
-        if(tool==Tool::RECTAGLE || tool==Tool::ELLIPSE || tool == Tool::TRIANGLE)
-            shapes.back()->updateCreate(lastPoint);
-        else if(tool == Tool::CONNTECTION_LINE)
-            if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line, so
-                shapes.back()->updateCreate(lastPoint);               // it will work only if a connection line was created.
-                                                                      // In other words isConnectedWithShape should be true (in mousePressEvent)
-    }
+	if (!shapes.empty() && leftMouseIsDown)
+	{
+		if (tool == Tool::RECTAGLE || tool == Tool::ELLIPSE || tool == Tool::TRIANGLE)
+			shapes.back()->updateCreate(lastPoint);
+		else if (tool == Tool::CONNTECTION_LINE)
+			if (dynamic_cast<ConnectionLine*>(shapes.back()) != nullptr) // if the last pushed element is a connection line, so
+				shapes.back()->updateCreate(lastPoint);               // it will work only if a connection line was created.
+																	  // In other words isConnectedWithShape should be true (in mousePressEvent)
+	}
 
-    // move the shape
-    lastPoint.setX(event->x());
-    lastPoint.setY(event->y());
-    moveSelectedShape(lastPoint);
-    if(tool==Tool::MOVE && leftMouseIsDown)
-        point = lastPoint;
+	// move the shape
+	lastPoint.setX(event->x());
+	lastPoint.setY(event->y());
+	moveSelectedShape(lastPoint);
+	if (tool == Tool::MOVE && leftMouseIsDown)
+		point = lastPoint;
 
-    // update line points coordinates
-    if(leftMouseIsDown)
-    {
-        for(auto shape:shapes)
-        {
-            if(dynamic_cast<ConnectionLine*>(shape)!=nullptr)
-                dynamic_cast<ConnectionLine*>(shape)->updateConnection(shapes);
-        }
-    }
-    update();
+	// update line points coordinates
+	if (leftMouseIsDown)
+	{
+		for (auto shape : shapes)
+		{
+			if (dynamic_cast<ConnectionLine*>(shape) != nullptr)
+				dynamic_cast<ConnectionLine*>(shape)->updateConnection(shapes);
+		}
+	}
+	update();
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 {
-    if(!shapes.empty() && tool == Tool::CONNTECTION_LINE)
-        checkLineConnection();
+	if (!shapes.empty() && tool == Tool::CONNTECTION_LINE)
+		checkLineConnection();
 
-    IDs.first = 0;
-    IDs.second = 0;
+	IDs.first = 0;
+	IDs.second = 0;
 
-    leftMouseIsDown = false;
+	leftMouseIsDown = false;
 
-    lastPoint.setX(event->x());
-    lastPoint.setY(event->y());
+	lastPoint.setX(event->x());
+	lastPoint.setY(event->y());
 
-    moveSelectedShape(lastPoint);
-    update();
+	moveSelectedShape(lastPoint);
+	update();
 }
 
 
-void MainWindow::paintEvent(QPaintEvent *event)
+void MainWindow::paintEvent(QPaintEvent* event)
 {
-    for(const auto& shape:shapes)
-        shape->draw(this);
+	for (const auto& shape : shapes)
+		shape->draw(this);
 }
 
 void MainWindow::unselectShapes()
 {
-    for(const auto& shape:shapes)
-        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
-            dynamic_cast<AreaShape*>(shape)->setSelected(false);
+	for (const auto& shape : shapes)
+		if (dynamic_cast<AreaShape*>(shape) != nullptr)
+			dynamic_cast<AreaShape*>(shape)->setSelected(false);
 }
 
-void MainWindow::moveSelectedShape(const QPoint &lastPoint)
+void MainWindow::moveSelectedShape(const QPoint& lastPoint)
 {
-    for(const auto& shape:shapes)
-        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
-            if(dynamic_cast<AreaShape*>(shape)->isSelected())
-                dynamic_cast<AreaShape*>(shape)->update(point - lastPoint);
+	for (const auto& shape : shapes)
+		if (dynamic_cast<AreaShape*>(shape) != nullptr)
+			if (dynamic_cast<AreaShape*>(shape)->isSelected())
+				dynamic_cast<AreaShape*>(shape)->update(point - lastPoint);
 }
 
 void MainWindow::drawCenters(bool shouldDrawCenters)
 {
-    for(const auto& shape:shapes)
-    {
-        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
-        {
-            if(shouldDrawCenters)
-            {
-                dynamic_cast<AreaShape*>(shape)->drawCenter(true);
-            }
-            else
-            {
-                dynamic_cast<AreaShape*>(shape)->drawCenter(false);
-            }
-        }
-    }
+	for (const auto& shape : shapes)
+	{
+		if (dynamic_cast<AreaShape*>(shape) != nullptr)
+		{
+			if (shouldDrawCenters)
+			{
+				dynamic_cast<AreaShape*>(shape)->drawCenter(true);
+			}
+			else
+			{
+				dynamic_cast<AreaShape*>(shape)->drawCenter(false);
+			}
+		}
+	}
 }
 
 bool MainWindow::isConnectedWithShape(QPoint point, int& IDConntectedWith)
 {
-    for(const auto& shape:shapes)
-    {
-        if(dynamic_cast<AreaShape*>(shape)!=nullptr)
-        {
-            if(dynamic_cast<AreaShape*>(shape)->containsCenter(point))
-            {
-                IDConntectedWith = dynamic_cast<AreaShape*>(shape)->getID();
-                return true;
-            }
-        }
-    }
-    return false;
+	for (const auto& shape : shapes)
+	{
+		if (dynamic_cast<AreaShape*>(shape) != nullptr)
+		{
+			if (dynamic_cast<AreaShape*>(shape)->containsCenter(point))
+			{
+				IDConntectedWith = dynamic_cast<AreaShape*>(shape)->getID();
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void MainWindow::loadFile()
 {
-    shapes.clear();
-    IShape* shape = nullptr;
-    int size{}; // size of shapes vector
-    int toolType{}; // it will be casted into Tool enum class
-    QString filePath = QFileDialog::getOpenFileName(this, "Open a file", "", filter);
+	shape = nullptr;
+	int size{}; // size of shapes vector
+	int toolType{}; // it will be casted into Tool enum class
+	QString filePath = QFileDialog::getOpenFileName(this, "Open a file", "", filter);
 
-    QFile file(filePath);
+	QFile file(filePath);
 
-    if(!file.open((QIODevice::ReadOnly)))
-        return;
+	if (!file.open((QIODevice::ReadOnly)))
+		return;
 
-    QDataStream in(&file);
-    in.setVersion(QDataStream::Qt_5_12);
+	shapes.clear(); //if the file has been opened
+	QDataStream in(&file);
+	in.setVersion(QDataStream::Qt_5_12);
 
-    in>>size;
-    in>>toolType;
-    tool = static_cast<Tool>(toolType);
+	in >> size;
+	in >> toolType;
+	tool = static_cast<Tool>(toolType);
 
-    // load shapes
-    for(int i = 0; i < size; i++)
-    {
-        shape = nullptr;
-        QPoint point(0, 0);
-        unsigned short int type{};
-        in >> type;
+	// load shapes
+	for (int i = 0; i < size; i++)
+	{
+		shape = nullptr;
+		QPoint point(0, 0);
+		unsigned short int type{};
+		in >> type;
 
-        switch(type)
-        {
-        case static_cast<unsigned short int>(Type::ELLIPSE):
-            qDebug() << "case" << static_cast<unsigned short int>(Type::ELLIPSE);
-            shape = new Ellipse(point);
-            break;
-        case static_cast<unsigned short int>(Type::RECTANGLE):
-            qDebug() << "case" << static_cast<unsigned short int>(Type::RECTANGLE);
-            shape = new Rectangle(point);
-            break;
-        case static_cast<unsigned short int>(Type::TRIANGLE):
-            qDebug() << "case" << static_cast<unsigned short int>(Type::TRIANGLE);
-            shape = new Triangle(point);
-            break;
-        case static_cast<unsigned short int>(Type::CONNECTION_LINE):
-            shape = new ConnectionLine(point);
-            break;
-        }
-        shape->load(in);
-        shapes.push_back(shape);
-    }
+		switch (type)
+		{
+		case static_cast<unsigned short int>(Type::ELLIPSE):
+			qDebug() << "case" << static_cast<unsigned short int>(Type::ELLIPSE);
+			shape = new Ellipse(point);
+			break;
+		case static_cast<unsigned short int>(Type::RECTANGLE):
+			qDebug() << "case" << static_cast<unsigned short int>(Type::RECTANGLE);
+			shape = new Rectangle(point);
+			break;
+		case static_cast<unsigned short int>(Type::TRIANGLE):
+			qDebug() << "case" << static_cast<unsigned short int>(Type::TRIANGLE);
+			shape = new Triangle(point);
+			break;
+		case static_cast<unsigned short int>(Type::CONNECTION_LINE):
+			shape = new ConnectionLine(point);
+			break;
+		}
+		shape->load(in);
+		shapes.push_back(shape);
+	}
 
-    file.close();
+	file.close();
 }
 
 void MainWindow::safeFile()
 {
-    fileNameWithPath = QFileDialog::getSaveFileName(this, "Save your file", fileNameWithPath);
+	fileNameWithPath = QFileDialog::getSaveFileName(this, "Save your file", fileNameWithPath);
 
-    if(fileNameWithPath!="" && !fileNameWithPath.endsWith(".qda"))
-        fileNameWithPath.append(".qda");
+	if (fileNameWithPath != "" && !fileNameWithPath.endsWith(".qda"))
+		fileNameWithPath.append(".qda");
 
-    QFile file(fileNameWithPath);
-    if(!file.open((QIODevice::WriteOnly)))
-        return;
+	QFile file(fileNameWithPath);
+	if (!file.open((QIODevice::WriteOnly)))
+		return;
 
-    QDataStream out(&file);
-    out.setVersion(QDataStream::Qt_5_12);
-    out << static_cast<int>(shapes.size());
-    out << static_cast<int>(tool);
+	QDataStream out(&file);
+	out.setVersion(QDataStream::Qt_5_12);
+	out << static_cast<int>(shapes.size());
+	out << static_cast<int>(tool);
 
-    for(const auto& shape:shapes)
-    {
-        if(dynamic_cast<Ellipse*>(shape)!=nullptr)
-            out << static_cast<unsigned short int>(Type::ELLIPSE);
-        else if(dynamic_cast<Rectangle*>(shape)!=nullptr)
-            out <<  static_cast<unsigned short int>(Type::RECTANGLE);
-        else if(dynamic_cast<Triangle*>(shape)!=nullptr)
-            out << static_cast<unsigned short int>(Type::TRIANGLE);
-        else if(dynamic_cast<ConnectionLine*>(shape)!=nullptr)
-            out << static_cast<unsigned short int>(Type::CONNECTION_LINE);
+	for (const auto& shape : shapes)
+	{
+		if (dynamic_cast<Ellipse*>(shape) != nullptr)
+			out << static_cast<unsigned short int>(Type::ELLIPSE);
+		else if (dynamic_cast<Rectangle*>(shape) != nullptr)
+			out << static_cast<unsigned short int>(Type::RECTANGLE);
+		else if (dynamic_cast<Triangle*>(shape) != nullptr)
+			out << static_cast<unsigned short int>(Type::TRIANGLE);
+		else if (dynamic_cast<ConnectionLine*>(shape) != nullptr)
+			out << static_cast<unsigned short int>(Type::CONNECTION_LINE);
 
-        shape->safe(out);
-    }
+		shape->safe(out);
+	}
 
-    file.flush();
-    file.close();
+	file.flush();
+	file.close();
 }
 
 void MainWindow::checkLineConnection()
 {
-    if(!isConnectedWithShape(lastPoint, IDs.second) || IDs.first == IDs.second)
-    {
-        if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr && // if the last pushed element is a connection line.
-                shape!=nullptr) // we can't delete a connected line now because the line was not created (is equal to nullptr)
-        {
-            delete shapes.back();
-            shapes.pop_back();
-            QMessageBox::information(this, "Wrong connection", "The line is not connected to a shape center");
-        }
-    }
-    else
-    {
-        dynamic_cast<ConnectionLine*>(shapes.back())->linkToShape(NULL, IDs.second);
-        dynamic_cast<ConnectionLine*>(shapes.back())->updateConnection(shapes);
-    }
+	if (!isConnectedWithShape(lastPoint, IDs.second) || IDs.first == IDs.second)
+	{
+		if (dynamic_cast<ConnectionLine*>(shapes.back()) != nullptr && // if the last pushed element is a connection line.
+			shape != nullptr) // we can't delete a connected line now because the line was not created (is equal to nullptr)
+		{
+			delete shapes.back();
+			shapes.pop_back();
+			QMessageBox::information(this, "Wrong connection", "The line is not connected to a shape center");
+		}
+	}
+	else
+	{
+		dynamic_cast<ConnectionLine*>(shapes.back())->linkToShape(NULL, IDs.second);
+		dynamic_cast<ConnectionLine*>(shapes.back())->updateConnection(shapes);
+	}
 }
 
-void MainWindow::unsetActiveExept(const MainWindow::Tool &tool)
+void MainWindow::unsetActiveExept(const MainWindow::Tool& tool)
 {
-    if(Tool::ELLIPSE != tool)
-    {
-        ui->actionEllipse->setChecked(false);
-    }
-    if(Tool::RECTAGLE != tool)
-    {
-        ui->actionRectangle->setChecked(false);
-    }
-    if(Tool::TRIANGLE != tool)
-    {
-        ui->actionTriangle->setChecked(false);
-    }
-    if(Tool::CONNTECTION_LINE != tool)
-    {
-        ui->actionConnect->setChecked(false);
-    }
-    if(Tool::MOVE != tool)
-    {
-        ui->actionMove->setChecked(false);
-    }
+	if (Tool::ELLIPSE != tool)
+	{
+		ui->actionEllipse->setChecked(false);
+	}
+	if (Tool::RECTAGLE != tool)
+	{
+		ui->actionRectangle->setChecked(false);
+	}
+	if (Tool::TRIANGLE != tool)
+	{
+		ui->actionTriangle->setChecked(false);
+	}
+	if (Tool::CONNTECTION_LINE != tool)
+	{
+		ui->actionConnect->setChecked(false);
+	}
+	if (Tool::MOVE != tool)
+	{
+		ui->actionMove->setChecked(false);
+	}
 
 }
 
-void MainWindow::setActive(const MainWindow::Tool &tool)
+void MainWindow::setActive(const MainWindow::Tool& tool)
 {
-    switch(tool)
-    {
-    case Tool::ELLIPSE:
-        ui->actionEllipse->setChecked(true);
-        break;
-    case Tool::RECTAGLE:
-        ui->actionRectangle->setChecked(true);
-        break;
-    case Tool::TRIANGLE:
-        ui->actionTriangle->setChecked(true);
-        break;
-    case Tool::CONNTECTION_LINE:
-        ui->actionConnect->setChecked(true);
-        break;
-    case Tool::MOVE:
-        ui->actionMove->setChecked(true);
-        break;
-    default:
-        break;
-    }
+	switch (tool)
+	{
+	case Tool::ELLIPSE:
+		ui->actionEllipse->setChecked(true);
+		break;
+	case Tool::RECTAGLE:
+		ui->actionRectangle->setChecked(true);
+		break;
+	case Tool::TRIANGLE:
+		ui->actionTriangle->setChecked(true);
+		break;
+	case Tool::CONNTECTION_LINE:
+		ui->actionConnect->setChecked(true);
+		break;
+	case Tool::MOVE:
+		ui->actionMove->setChecked(true);
+		break;
+	default:
+		break;
+	}
 }
 
-void MainWindow::selectShape(QMouseEvent *event)
+void MainWindow::selectShape(QMouseEvent* event)
 {
-    for(int i = shapes.size() - 1; i>=0; i--)
-    {
-        if(dynamic_cast<AreaShape*>(shapes[i])!=nullptr)
-        {
-            if(dynamic_cast<AreaShape*>(shapes[i])->contains(QPoint(event->x(), event->y())))
-            {
-                dynamic_cast<AreaShape*>(shapes[i])->setSelected(true);
-                return;
-            }
-        }
-    }
+	for (int i = shapes.size() - 1; i >= 0; i--)
+	{
+		if (dynamic_cast<AreaShape*>(shapes[i]) != nullptr)
+		{
+			if (dynamic_cast<AreaShape*>(shapes[i])->contains(QPoint(event->x(), event->y())))
+			{
+				dynamic_cast<AreaShape*>(shapes[i])->setSelected(true);
+				return;
+			}
+		}
+	}
 }
 
 void MainWindow::on_actionLoad_triggered()
 {
-    loadFile();
-    update();
-    unsetActiveExept(tool);
-    setActive(tool);
+	loadFile();
+	update();
+	unsetActiveExept(tool);
+	setActive(tool);
 }
 
 void MainWindow::on_actionSave_triggered()
 {
-    safeFile();
+	safeFile();
 }
 
 void MainWindow::on_actionEllipse_triggered()
 {
-    tool = Tool::ELLIPSE;
-    unselectShapes();
-    unsetActiveExept(Tool::ELLIPSE);
-    drawCenters(false);
-    update();
+	tool = Tool::ELLIPSE;
+	unselectShapes();
+	unsetActiveExept(Tool::ELLIPSE);
+	drawCenters(false);
+	update();
 }
 
 void MainWindow::on_actionTriangle_triggered()
 {
-    tool = Tool::TRIANGLE;
-    unselectShapes();
-    unsetActiveExept(Tool::TRIANGLE);
-    drawCenters(false);
-    update();
+	tool = Tool::TRIANGLE;
+	unselectShapes();
+	unsetActiveExept(Tool::TRIANGLE);
+	drawCenters(false);
+	update();
 }
 
 void MainWindow::on_actionRectangle_triggered()
 {
-    tool = Tool::RECTAGLE;
-    unselectShapes();
-    unsetActiveExept(Tool::RECTAGLE);
-    drawCenters(false);
-    update();
+	tool = Tool::RECTAGLE;
+	unselectShapes();
+	unsetActiveExept(Tool::RECTAGLE);
+	drawCenters(false);
+	update();
 }
 
 void MainWindow::on_actionConnect_triggered()
 {
-    tool = Tool::CONNTECTION_LINE;
-    unselectShapes();
-    unsetActiveExept(Tool::CONNTECTION_LINE);
-    drawCenters(true);
-    update();
+	tool = Tool::CONNTECTION_LINE;
+	unselectShapes();
+	unsetActiveExept(Tool::CONNTECTION_LINE);
+	drawCenters(true);
+	update();
 }
 
 void MainWindow::on_actionMove_triggered()
 {
-    tool = Tool::MOVE;
-    unsetActiveExept(Tool::MOVE);
-    drawCenters(false);
-    update();
+	tool = Tool::MOVE;
+	unsetActiveExept(Tool::MOVE);
+	drawCenters(false);
+	update();
 }

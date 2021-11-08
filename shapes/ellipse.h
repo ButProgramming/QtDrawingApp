@@ -6,10 +6,10 @@
 class Ellipse : public AreaShape
 {
 public:
-    Ellipse(const QPoint& point) : AreaShape(point) {}
+	Ellipse(const QPoint& point) : AreaShape(point) {}
 
-    void draw(QPaintDevice* device) override;
-    bool contains(const QPoint& point) override;
+	void draw(QPaintDevice* device) override;
+	bool contains(const QPoint& point) override;
 };
 
 #endif // ELLIPSE_H

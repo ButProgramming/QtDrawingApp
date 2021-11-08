@@ -22,83 +22,83 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+	MainWindow(QWidget* parent = nullptr);
+	~MainWindow();
 
-    virtual void mousePressEvent(QMouseEvent *event);
+	virtual void mousePressEvent(QMouseEvent* event);
 
-    virtual void paintEvent(QPaintEvent *event);
+	virtual void paintEvent(QPaintEvent* event);
 
-    virtual void mouseReleaseEvent(QMouseEvent *event);
+	virtual void mouseReleaseEvent(QMouseEvent* event);
 
-    virtual void mouseMoveEvent(QMouseEvent *event);
+	virtual void mouseMoveEvent(QMouseEvent* event);
 
 private slots:
-    void on_actionEllipse_triggered();
+	void on_actionEllipse_triggered();
 
-    void on_actionTriangle_triggered();
+	void on_actionTriangle_triggered();
 
-    void on_actionRectangle_triggered();
+	void on_actionRectangle_triggered();
 
-    void on_actionConnect_triggered();
+	void on_actionConnect_triggered();
 
-    void on_actionMove_triggered();
+	void on_actionMove_triggered();
 
-    void on_actionLoad_triggered();
+	void on_actionLoad_triggered();
 
-    void on_actionSave_triggered();
-
-private:
-    void selectShape(QMouseEvent *event);
-
-    void unselectShapes();
-
-    void moveSelectedShape(const QPoint& lastPoint);
-
-    void drawCenters(bool shouldDrawCenters);
-
-    bool isConnectedWithShape(QPoint point, int& IDConnectedWith);
-
-    void loadFile();
-
-    void safeFile();
-
-    void checkLineConnection();
-
-    enum class Tool
-    {
-        ELLIPSE,
-        RECTAGLE,
-        TRIANGLE,
-        CONNTECTION_LINE,
-        MOVE
-    };
-
-    void unsetActiveExept(const Tool& tool); // unset active exept tool Tool
-
-    void setActive(const Tool& tool);
-
+	void on_actionSave_triggered();
 
 private:
-    Ui::MainWindow *ui;
+	void selectShape(QMouseEvent* event);
 
-    const QString filter = "QtDrawingApp files (*.qda*)";
-    QString fileNameWithPath;
+	void unselectShapes();
 
-    bool leftMouseIsDown = false;
+	void moveSelectedShape(const QPoint& lastPoint);
 
-    IShape* shape = nullptr;
-    std::vector<IShape*> shapes;
+	void drawCenters(bool shouldDrawCenters);
 
-    QPoint point;
-    QPoint lastPoint;
+	bool isConnectedWithShape(QPoint point, int& IDConnectedWith);
 
-    std::pair<int, int> IDs;
+	void loadFile();
 
-    Tool tool = Tool::MOVE;
+	void safeFile();
+
+	void checkLineConnection();
+
+	enum class Tool
+	{
+		ELLIPSE,
+		RECTAGLE,
+		TRIANGLE,
+		CONNTECTION_LINE,
+		MOVE
+	};
+
+	void unsetActiveExept(const Tool& tool); // unset active exept tool Tool
+
+	void setActive(const Tool& tool);
+
+
+private:
+	Ui::MainWindow* ui;
+
+	const QString filter = "QtDrawingApp files (*.qda*)";
+	QString fileNameWithPath;
+
+	bool leftMouseIsDown = false;
+
+	IShape* shape = nullptr;
+	std::vector<IShape*> shapes;
+
+	QPoint point;
+	QPoint lastPoint;
+
+	std::pair<int, int> IDs;
+
+	Tool tool = Tool::MOVE;
 };
 
 #endif // MAINWINDOW_H

@@ -1,36 +1,36 @@
 #include "rectangle.h"
 
-void Rectangle::draw(QPaintDevice *device)
+void Rectangle::draw(QPaintDevice* device)
 {
-    QPainter* painter = new QPainter(device);
+	QPainter* painter = new QPainter(device);
 
-    if(m_selected)
-    {
-        drawSelection(painter);
-        delete painter;
-        return;
-    }
+	if (m_selected)
+	{
+		drawSelection(painter);
+		delete painter;
+		return;
+	}
 
-    painter->setBrush(Qt::white);
-    painter->drawRect(m_rect);
-    if(m_shouldDrawCenter)
-        drawEllipseCenter(painter);
+	painter->setBrush(Qt::white);
+	painter->drawRect(m_rect);
+	if (m_shouldDrawCenter)
+		drawEllipseCenter(painter);
 
-    delete painter;
+	delete painter;
 }
 
-bool Rectangle::contains(const QPoint &point)
+bool Rectangle::contains(const QPoint& point)
 {
-    if(m_rect.contains(point))
-        return true;
+	if (m_rect.contains(point))
+		return true;
 
-    return false;
+	return false;
 }
 
 void Rectangle::drawSelection(QPainter* painter)
 {
-    painter->setPen(Qt::DotLine);
-    painter->setBrush(Qt::white);
-    painter->drawRect(m_rect);
+	painter->setPen(Qt::DotLine);
+	painter->setBrush(Qt::white);
+	painter->drawRect(m_rect);
 }
 
