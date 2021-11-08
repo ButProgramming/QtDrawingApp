@@ -86,6 +86,7 @@ private:
     Ui::MainWindow *ui;
 
     const QString filter = "QtDrawingApp files (*.qda*)";
+    QString fileNameWithPath;
 
     bool leftMouseIsDown = false;
 

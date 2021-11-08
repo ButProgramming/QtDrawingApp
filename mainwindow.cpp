@@ -224,12 +224,12 @@ void MainWindow::loadFile()
 
 void MainWindow::safeFile()
 {
-    QString filePath = QFileDialog::getSaveFileName(this, "Save your file", "", filter);
+    fileNameWithPath = QFileDialog::getSaveFileName(this, "Save your file", fileNameWithPath);
 
-    if(filePath!="" && !filePath.endsWith(".qda"))
-        filePath.append(".qda");
+    if(fileNameWithPath!="" && !fileNameWithPath.endsWith(".qda"))
+        fileNameWithPath.append(".qda");
 
-    QFile file(filePath);
+    QFile file(fileNameWithPath);
     if(!file.open((QIODevice::WriteOnly)))
         return;
 
