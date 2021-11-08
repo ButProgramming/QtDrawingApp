@@ -55,5 +55,6 @@ void AreaShape::updateCreate(const QPoint& lastPoint)
 
 void AreaShape::drawEllipseCenter(QPainter *painter)
 {
+    painter->setPen(Qt::DashLine);
     painter->drawEllipse(m_rect.center(), consts::sizeOfCenterEllipse, consts::sizeOfCenterEllipse);
 }

@@ -29,7 +29,7 @@ void ConnectionLine::linkToShape(int firstID, int secondID)
 void ConnectionLine::updateConnection(const std::vector<IShape *> &shapes)
 {
 
-    if(!m_firstIDShape || !m_secondIDShape)
+    if(!m_firstIDShape || !m_secondIDShape) // if the line is not created yet
         return;
 
     for(const auto& shape:shapes)
@@ -40,8 +40,8 @@ void ConnectionLine::updateConnection(const std::vector<IShape *> &shapes)
             {
                 m_points.first = dynamic_cast<AreaShape*>(shape)->getCenter();
             }
-            if(dynamic_cast<AreaShape*>(shape)->getID() == m_secondIDShape)
-            {
+            else if(dynamic_cast<AreaShape*>(shape)->getID() == m_secondIDShape) // ConnectionLine cannot be connected
+            {                                                                    // to itself
                 m_points.second = dynamic_cast<AreaShape*>(shape)->getCenter();
             }
         }

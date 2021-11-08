@@ -2,17 +2,11 @@
 #define ISHAPE_H
 
 #include <QMainWindow>
-//#include <QMouseEvent>
 #include <QPainter>
-//#include <QEvent>
-//#include <QObject>
-//#include <QCursor>
 #include <QPoint>
 #include <QDebug>
 #include <QGraphicsEllipseItem>
 #include <QDataStream>
-//#include <QtCore>
-//#include <QFile>
 
 // stl
 #include <vector>
@@ -29,7 +23,7 @@ enum class Type
 
 namespace consts
 {
-    const int sizeOfCenterEllipse = 5;
+    const int sizeOfCenterEllipse = 8;
     const int sizeOfPenForTriangle = 2;
     const int standartSizeOfPen = 1;
     const int sizeOfPenForLine = 2;

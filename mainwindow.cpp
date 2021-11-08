@@ -29,6 +29,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     }
 
 
+    // create a shape
     shape = nullptr; // null it every time
     switch(tool)
     {
@@ -58,7 +59,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         break;
     }
 
-    // if the tool was not MOVE, SAFE or LOAD
+    // if the tool was not MOVE
     if(shape!=nullptr)
         shapes.push_back(shape);
 
@@ -71,9 +72,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
         if(tool==Tool::RECTAGLE || tool==Tool::ELLIPSE || tool == Tool::TRIANGLE)
             shapes.back()->updateCreate(lastPoint);
         else if(tool == Tool::CONNTECTION_LINE)
-            if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
-                shapes.back()->updateCreate(lastPoint);               // it will work only if a connection line was created,
-                                                                      // in other words isConnectedWithShape -> true (in mousePressEvent)
+            if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line, so
+                shapes.back()->updateCreate(lastPoint);               // it will work only if a connection line was created.
+                                                                      // In other words isConnectedWithShape should be true (in mousePressEvent)
     }
 
     // move the shape
@@ -83,7 +84,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     if(tool==Tool::MOVE && leftMouseIsDown)
         point = lastPoint;
 
-
+    // update line points coordinates
     if(leftMouseIsDown)
     {
         for(auto shape:shapes)
@@ -141,9 +142,13 @@ void MainWindow::drawCenters(bool shouldDrawCenters)
         if(dynamic_cast<AreaShape*>(shape)!=nullptr)
         {
             if(shouldDrawCenters)
+            {
                 dynamic_cast<AreaShape*>(shape)->drawCenter(true);
+            }
             else
+            {
                 dynamic_cast<AreaShape*>(shape)->drawCenter(false);
+            }
         }
     }
 }
@@ -168,8 +173,8 @@ void MainWindow::loadFile()
 {
     shapes.clear();
     IShape* shape = nullptr;
-    int size{};
-    int toolType{};
+    int size{}; // size of shapes vector
+    int toolType{}; // it will be casted into Tool enum class
     QString filePath = QFileDialog::getOpenFileName(this, "Open a file", "", filter);
 
     QFile file(filePath);
@@ -184,10 +189,10 @@ void MainWindow::loadFile()
     in>>toolType;
     tool = static_cast<Tool>(toolType);
 
+    // load shapes
     for(int i = 0; i < size; i++)
     {
         shape = nullptr;
-        QRect rect(0, 0, 0, 0);
         QPoint point(0, 0);
         unsigned short int type{};
         in >> type;
@@ -220,7 +225,9 @@ void MainWindow::loadFile()
 void MainWindow::safeFile()
 {
     QString filePath = QFileDialog::getSaveFileName(this, "Save your file", "", filter);
-    filePath.append(".qda");
+
+    if(filePath!="" && !filePath.endsWith(".qda"))
+        filePath.append(".qda");
 
     QFile file(filePath);
     if(!file.open((QIODevice::WriteOnly)))

@@ -4,9 +4,6 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QMouseEvent>
-//#include <QPainter>
-//#include <QPainterPath>
-//#include <QMessageBox>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -18,7 +15,6 @@
 
 //stl
 #include <vector>
-//using namespace std;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -81,7 +77,7 @@ private:
         MOVE
     };
 
-    void unsetActiveExept(const Tool& tool);
+    void unsetActiveExept(const Tool& tool); // unset active exept tool Tool
 
     void setActive(const Tool& tool);
 
