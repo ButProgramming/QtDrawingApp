@@ -74,7 +74,7 @@
   <action name="actionSave">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/images/save.ico</normaloff>:/images/images/save.ico</iconset>
+     <normaloff>:/images/images/save.png</normaloff>:/images/images/save.png</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -112,6 +112,12 @@
    <property name="text">
     <string>Ellipse</string>
    </property>
+   <property name="toolTip">
+    <string>(E)llipse</string>
+   </property>
+   <property name="shortcut">
+    <string>E</string>
+   </property>
   </action>
   <action name="actionRectangle">
    <property name="checkable">
@@ -123,6 +129,12 @@
    </property>
    <property name="text">
     <string>Rectangle</string>
+   </property>
+   <property name="toolTip">
+    <string>(R)ectangle</string>
+   </property>
+   <property name="shortcut">
+    <string>R</string>
    </property>
   </action>
   <action name="actionTriangle">
@@ -136,6 +148,12 @@
    <property name="text">
     <string>Triangle</string>
    </property>
+   <property name="toolTip">
+    <string>(T)riangle</string>
+   </property>
+   <property name="shortcut">
+    <string>T</string>
+   </property>
   </action>
   <action name="actionMove">
    <property name="checkable">
@@ -146,10 +164,16 @@
    </property>
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/images/images/hand.png</normaloff>:/images/images/hand.png</iconset>
+     <normaloff>:/images/images/move.png</normaloff>:/images/images/move.png</iconset>
    </property>
    <property name="text">
     <string>Move</string>
+   </property>
+   <property name="toolTip">
+    <string>(M)ove</string>
+   </property>
+   <property name="shortcut">
+    <string>M</string>
    </property>
   </action>
   <action name="actionConnect">
@@ -162,6 +186,12 @@
    </property>
    <property name="text">
     <string>Connect</string>
+   </property>
+   <property name="toolTip">
+    <string>(C)onnect</string>
+   </property>
+   <property name="shortcut">
+    <string>C</string>
    </property>
   </action>
  </widget>

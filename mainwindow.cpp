@@ -338,8 +338,6 @@ void MainWindow::on_actionLoad_triggered()
     update();
     unsetActiveExept(tool);
     setActive(tool);
-    //tool = Tool::MOVE;
-
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -388,6 +386,5 @@ void MainWindow::on_actionMove_triggered()
     tool = Tool::MOVE;
     unsetActiveExept(Tool::MOVE);
     drawCenters(false);
-
     update();
 }
