@@ -8,20 +8,20 @@ class AreaShape : public IShape
 {
 public:
     AreaShape(const QPoint& point) : IShape(point) { m_ID = ID++; }
-
     virtual ~AreaShape(){}
+
     virtual bool contains(const QPoint& point) = 0;
-    virtual void drawSelection(QPainter* painter);
+    virtual void drawSelection(QPainter* painter); // Rectangle override the method
 
     void safe(QDataStream &out) override;
     void load(QDataStream &in) override;
     void updateCreate(const QPoint& lastPoint) override;
 
     void update(const QPoint& differense);
-    void drawCenter(bool shouldDrawCenter) { m_shouldDrawCenter = shouldDrawCenter; }
     bool containsCenter(const QPoint& point);
     void drawEllipseCenter(QPainter* painter);
 
+    void drawCenter(bool shouldDrawCenter) { m_shouldDrawCenter = shouldDrawCenter; }
     void setSelected(bool selected) { m_selected = selected;}
     bool isSelected() {return m_selected;}
     int getID() {return m_ID;}

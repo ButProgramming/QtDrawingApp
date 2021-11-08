@@ -16,12 +16,10 @@ void AreaShape::safe(QDataStream &out)
     out << m_selected;
     out << m_shouldDrawCenter;
     out << m_ID;
-
 }
 
 void AreaShape::load(QDataStream &in)
 {
-
     in >> m_rect;
     in >> m_selected;
     in >> m_shouldDrawCenter;

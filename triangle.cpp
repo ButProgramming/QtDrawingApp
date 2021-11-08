@@ -1,6 +1,5 @@
 #include "triangle.h"
 
-
 void Triangle::draw(QPaintDevice *device)
 {
     QPainter* painter = new QPainter(device);

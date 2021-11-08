@@ -16,7 +16,6 @@
 #include <QFile>
 
 #include <vector>
-//#include <array>
 #include <utility>
 #include <memory>
 
@@ -40,20 +39,16 @@ class IShape
 {
 public:
     IShape() {}
-    //Shape(const QRect& rect) : m_rect(rect) {}
     IShape(const QPoint& point) : m_rect(QRect(point.x(), point.y(), NULL, NULL)) {}
     virtual ~IShape(){}
+
     virtual void draw(QPaintDevice* device) = 0;
     virtual void safe(QDataStream& out) = 0;
     virtual void load(QDataStream& in) = 0;
     virtual void updateCreate(const QPoint& lastPoint) = 0;
 
-
-
-
 protected:
     QRect m_rect;
-
 };
 
 

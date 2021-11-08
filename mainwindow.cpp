@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
 }
 
 MainWindow::~MainWindow()
@@ -101,7 +100,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     if(!shapes.empty() && tool == Tool::CONNTECTION_LINE)
         checkLineConnection();
 
-
     IDs.first = 0;
     IDs.second = 0;
 
@@ -147,7 +145,6 @@ void MainWindow::drawCenters(bool shouldDrawCenters)
                 dynamic_cast<AreaShape*>(shape)->drawCenter(true);
             else
                 dynamic_cast<AreaShape*>(shape)->drawCenter(false);
-
         }
     }
 }

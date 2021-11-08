@@ -7,21 +7,19 @@
 class ConnectionLine : public IShape
 {
 public:
-    //ConnectionLine(const QRect& rect) : Shape(rect){}
     ConnectionLine(const QPoint& point) {m_points.first = point;}
 
     void draw(QPaintDevice* device) override;
-
-    void linkToShape(int firstIDLink, int secondIDLink);
-    void updateConnection(const std::vector<IShape*>& shapes);
     void safe(QDataStream &out) override;
     void load(QDataStream& in) override;
     void updateCreate(const QPoint& lastPoint) override;
 
+    void linkToShape(int firstIDLink, int secondIDLink);
+    void updateConnection(const std::vector<IShape*>& shapes);
+
 private:
     int m_firstIDShape{};
     int m_secondIDShape{};
-    //std::array<QPoint, 2> m_points;
     std::pair<QPoint, QPoint> m_points;
 };
 

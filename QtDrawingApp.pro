@@ -19,7 +19,6 @@ SOURCES += \
     areashape.cpp \
     conntectionline.cpp \
     ellipse.cpp \
-    ishape.cpp \
     main.cpp \
     mainwindow.cpp \
     rectangle.cpp \
