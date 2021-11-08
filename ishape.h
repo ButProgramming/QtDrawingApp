@@ -2,19 +2,19 @@
 #define ISHAPE_H
 
 #include <QMainWindow>
-#include <QMouseEvent>
+//#include <QMouseEvent>
 #include <QPainter>
-#include <QEvent>
-
-#include <QObject>
-#include <QCursor>
+//#include <QEvent>
+//#include <QObject>
+//#include <QCursor>
 #include <QPoint>
 #include <QDebug>
 #include <QGraphicsEllipseItem>
 #include <QDataStream>
-#include <QtCore>
-#include <QFile>
+//#include <QtCore>
+//#include <QFile>
 
+// stl
 #include <vector>
 #include <utility>
 #include <memory>

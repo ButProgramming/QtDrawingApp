@@ -47,6 +47,9 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
             shape = new ConnectionLine(point);
             dynamic_cast<ConnectionLine*>(shape)->linkToShape(IDs.first, NULL);
         }
+        else
+            QMessageBox::information(this, "Wrong connection", "The line is not connected to a shape center");
+
         break;
     case Tool::MOVE:
         selectShape(event);
@@ -255,6 +258,7 @@ void MainWindow::checkLineConnection()
         {
             delete shapes.back();
             shapes.pop_back();
+            QMessageBox::information(this, "Wrong connection", "The line is not connected to a shape center");
         }
     }
     else

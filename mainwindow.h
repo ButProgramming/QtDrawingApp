@@ -4,9 +4,9 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QMessageBox>
+//#include <QPainter>
+//#include <QPainterPath>
+//#include <QMessageBox>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -18,7 +18,7 @@
 
 //stl
 #include <vector>
-using namespace std;
+//using namespace std;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -89,7 +89,7 @@ private:
     bool leftMouseIsDown = false;
 
     IShape* shape = nullptr;
-    vector<IShape*> shapes;
+    std::vector<IShape*> shapes;
 
     QPoint point;
     QPoint lastPoint;

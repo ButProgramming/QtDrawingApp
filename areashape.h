@@ -3,7 +3,6 @@
 
 #include "ishape.h"
 
-
 class AreaShape : public IShape
 {
 public:
