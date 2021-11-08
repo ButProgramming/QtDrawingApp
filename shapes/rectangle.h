@@ -1,7 +1,7 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 
-#include "areashape.h"
+#include "abstract/areashape.h"
 
 class Rectangle : public AreaShape
 {

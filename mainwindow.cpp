@@ -66,12 +66,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-
     if(!shapes.empty() && leftMouseIsDown)
     {
         if(tool==Tool::RECTAGLE || tool==Tool::ELLIPSE || tool == Tool::TRIANGLE)
             shapes.back()->updateCreate(lastPoint);
-
         else if(tool == Tool::CONNTECTION_LINE)
             if(dynamic_cast<ConnectionLine*>(shapes.back())!=nullptr) // if the last pushed element is a connection line.
                 shapes.back()->updateCreate(lastPoint);               // it will work only if a connection line was created,
@@ -95,7 +93,6 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
         }
     }
     update();
-
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -113,7 +110,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
     moveSelectedShape(lastPoint);
     update();
-
 }
 
 
@@ -173,6 +169,7 @@ void MainWindow::loadFile()
     shapes.clear();
     IShape* shape = nullptr;
     int size{};
+    int toolType{};
     QString filePath = QFileDialog::getOpenFileName(this, "Open a file", "", filter);
 
     QFile file(filePath);
@@ -184,6 +181,9 @@ void MainWindow::loadFile()
     in.setVersion(QDataStream::Qt_5_12);
 
     in>>size;
+    in>>toolType;
+    tool = static_cast<Tool>(toolType);
+
     for(int i = 0; i < size; i++)
     {
         shape = nullptr;
@@ -215,7 +215,6 @@ void MainWindow::loadFile()
     }
 
     file.close();
-
 }
 
 void MainWindow::safeFile()
@@ -230,6 +229,7 @@ void MainWindow::safeFile()
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_5_12);
     out << static_cast<int>(shapes.size());
+    out << static_cast<int>(tool);
 
     for(const auto& shape:shapes)
     {
@@ -268,6 +268,55 @@ void MainWindow::checkLineConnection()
     }
 }
 
+void MainWindow::unsetActiveExept(const MainWindow::Tool &tool)
+{
+    if(Tool::ELLIPSE != tool)
+    {
+        ui->actionEllipse->setChecked(false);
+    }
+    if(Tool::RECTAGLE != tool)
+    {
+        ui->actionRectangle->setChecked(false);
+    }
+    if(Tool::TRIANGLE != tool)
+    {
+        ui->actionTriangle->setChecked(false);
+    }
+    if(Tool::CONNTECTION_LINE != tool)
+    {
+        ui->actionConnect->setChecked(false);
+    }
+    if(Tool::MOVE != tool)
+    {
+        ui->actionMove->setChecked(false);
+    }
+
+}
+
+void MainWindow::setActive(const MainWindow::Tool &tool)
+{
+    switch(tool)
+    {
+    case Tool::ELLIPSE:
+        ui->actionEllipse->setChecked(true);
+        break;
+    case Tool::RECTAGLE:
+        ui->actionRectangle->setChecked(true);
+        break;
+    case Tool::TRIANGLE:
+        ui->actionTriangle->setChecked(true);
+        break;
+    case Tool::CONNTECTION_LINE:
+        ui->actionConnect->setChecked(true);
+        break;
+    case Tool::MOVE:
+        ui->actionMove->setChecked(true);
+        break;
+    default:
+        break;
+    }
+}
+
 void MainWindow::selectShape(QMouseEvent *event)
 {
     for(int i = shapes.size() - 1; i>=0; i--)
@@ -287,7 +336,10 @@ void MainWindow::on_actionLoad_triggered()
 {
     loadFile();
     update();
-    tool = Tool::MOVE;
+    unsetActiveExept(tool);
+    setActive(tool);
+    //tool = Tool::MOVE;
+
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -299,6 +351,7 @@ void MainWindow::on_actionEllipse_triggered()
 {
     tool = Tool::ELLIPSE;
     unselectShapes();
+    unsetActiveExept(Tool::ELLIPSE);
     drawCenters(false);
     update();
 }
@@ -307,6 +360,7 @@ void MainWindow::on_actionTriangle_triggered()
 {
     tool = Tool::TRIANGLE;
     unselectShapes();
+    unsetActiveExept(Tool::TRIANGLE);
     drawCenters(false);
     update();
 }
@@ -315,6 +369,7 @@ void MainWindow::on_actionRectangle_triggered()
 {
     tool = Tool::RECTAGLE;
     unselectShapes();
+    unsetActiveExept(Tool::RECTAGLE);
     drawCenters(false);
     update();
 }
@@ -323,6 +378,7 @@ void MainWindow::on_actionConnect_triggered()
 {
     tool = Tool::CONNTECTION_LINE;
     unselectShapes();
+    unsetActiveExept(Tool::CONNTECTION_LINE);
     drawCenters(true);
     update();
 }
@@ -330,6 +386,8 @@ void MainWindow::on_actionConnect_triggered()
 void MainWindow::on_actionMove_triggered()
 {
     tool = Tool::MOVE;
+    unsetActiveExept(Tool::MOVE);
     drawCenters(false);
+
     update();
 }

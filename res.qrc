@@ -5,7 +5,7 @@
         <file>images/hand.png</file>
         <file>images/load.png</file>
         <file>images/rectangle.png</file>
-        <file>images/Save.ico</file>
+        <file>images/save.ico</file>
         <file>images/triangle.png</file>
     </qresource>
 </RCC>

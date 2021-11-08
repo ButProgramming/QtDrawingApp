@@ -16,22 +16,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    areashape.cpp \
-    conntectionline.cpp \
-    ellipse.cpp \
+    abstract/areashape.cpp \
+    shapes/conntectionline.cpp \
+    shapes/ellipse.cpp \
     main.cpp \
     mainwindow.cpp \
-    rectangle.cpp \
-    triangle.cpp
+    shapes/rectangle.cpp \
+    shapes/triangle.cpp
 
 HEADERS += \
-    areashape.h \
-    conntectionline.h \
-    ellipse.h \
-    ishape.h \
+    abstract/areashape.h \
+    shapes/conntectionline.h \
+    shapes/ellipse.h \
+    abstract/ishape.h \
     mainwindow.h \
-    rectangle.h \
-    triangle.h
+    shapes/rectangle.h \
+    shapes/triangle.h
 
 FORMS += \
     mainwindow.ui
@@ -43,3 +43,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+DISTFILES += \
+    images/save.ico \
+    images/connection-line.png \
+    images/ellipse.png \
+    images/hand.png \
+    images/load.png \
+    images/rectangle.png \
+    images/triangle.png

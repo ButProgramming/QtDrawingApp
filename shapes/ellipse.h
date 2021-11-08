@@ -1,7 +1,7 @@
 #ifndef ELLIPSE_H
 #define ELLIPSE_H
 
-#include "areashape.h"
+#include "abstract/areashape.h"
 
 class Ellipse : public AreaShape
 {

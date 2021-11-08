@@ -1,8 +1,8 @@
 #ifndef CONNTECTIONLINE_H
 #define CONNTECTIONLINE_H
 
-#include "ishape.h"
-#include "areashape.h"
+#include "abstract/ishape.h"
+#include "abstract/areashape.h"
 
 class ConnectionLine : public IShape
 {

@@ -1,7 +1,7 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include "areashape.h"
+#include "abstract/areashape.h"
 
 class Triangle : public AreaShape
 {

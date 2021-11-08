@@ -11,10 +11,10 @@
 #include <QMessageBox>
 
 // classes
-#include "rectangle.h"
-#include "ellipse.h"
-#include "triangle.h"
-#include "conntectionline.h"
+#include "shapes/rectangle.h"
+#include "shapes/ellipse.h"
+#include "shapes/triangle.h"
+#include "shapes/conntectionline.h"
 
 //stl
 #include <vector>
@@ -80,6 +80,11 @@ private:
         CONNTECTION_LINE,
         MOVE
     };
+
+    void unsetActiveExept(const Tool& tool);
+
+    void setActive(const Tool& tool);
+
 
 private:
     Ui::MainWindow *ui;
